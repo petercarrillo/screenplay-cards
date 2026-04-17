@@ -2,8 +2,10 @@
 <!--
   Screenplay Cards
   ─────────────────────────────────────────────────────────
-  Created by Peter Carrillo & Claude (Anthropic)
-  Built through collaborative conversation, April 2026.
+  Designed by Peter Carrillo, a screenwriter.
+  Built in collaboration with Claude (Anthropic) —
+  Peter shaped every feature, Claude wrote the code.
+  April 2026.
 
   Open source — modify it, improve it, pass it on.
   If you are a writer who finds it useful, it is yours.
@@ -387,6 +389,7 @@ function renderTbar(){
     <button id="expbtn">export</button>
     <button id="impbtn">import</button>
     <button id="outbtn">outline</button>
+    <button id="beatsbtn">beats</button>
     <span class="ctr"><span class="sdot" id="sdot"></span><span id="cnt">${countedScenes().length} scene${countedScenes().length===1?'':'s'}</span></span>
     <span style="color:#d3d1c7;margin:0 2px">|</span>
     <div id="actbar" style="display:flex;gap:4px;align-items:center;flex-wrap:nowrap"></div>
@@ -402,6 +405,7 @@ function renderTbar(){
   document.getElementById('expbtn').addEventListener('click',exportData);
   document.getElementById('impbtn').addEventListener('click',importData);
   document.getElementById('outbtn').addEventListener('click',printOutline);
+  document.getElementById('beatsbtn').addEventListener('click',printBeats);
   document.getElementById('fscrn').addEventListener('click',toggleFS);
   updateFSBtn();
   renderActBar();
@@ -821,9 +825,55 @@ function printOutline(){
 }
 
 
+
+function printBeats(){
+  const proj=projects.find(x=>x.id===curP);
+  const title=proj?proj.name:'Screenplay';
+  const dateStr=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+
+  const sections=getActSections();
+  const visibleIds=actFilter.size===0?null:(()=>{
+    const ids=new Set();
+    sections.filter(s=>actFilter.has(s.label)).forEach(s=>s.ids.forEach(id=>ids.add(id)));
+    return ids;
+  })();
+  const filterLabel=actFilter.size>0?(' — '+Array.from(actFilter).join(', ')):'';
+
+  let body='';
+  C().forEach(c=>{
+    if(visibleIds&&!visibleIds.has(c.id))return;
+    if(isActHeader(c)){
+      body+='<div class="act">'+esc(c.title||'')+'</div>';
+      return;
+    }
+    const num=c.nocount?'&mdash;':'SC. '+c.sn;
+    const titleHtml=esc((c.title||'').trim())||'<em style="color:#b4b2a9">untitled</em>';
+    body+='<div class="beat"><span class="beat-num">'+num+'</span><span class="beat-title">'+titleHtml+'</span></div>';
+  });
+
+  const html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+esc(title+filterLabel)+' — Beats</title>'
+    +'<style>'
+    +'body{font-family:Georgia,serif;max-width:680px;margin:48px auto;padding:0 24px;color:#1a1a18;line-height:1.6}'
+    +'h1{font-size:22px;font-weight:600;margin:0 0 4px}'
+    +'.meta{font-size:13px;color:#888;margin-bottom:40px}'
+    +'.act{font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#888;margin:32px 0 12px;padding-bottom:6px;border-bottom:1px solid #e0ddd8}'
+    +'.beat{display:flex;gap:10px;align-items:baseline;margin-bottom:10px}'
+    +'.beat-num{font-size:12px;color:#888780;font-family:-apple-system,sans-serif;font-weight:600;min-width:48px;flex-shrink:0;padding-top:2px}'
+    +'.beat-title{font-size:15px;}'
+    +'@media print{body{margin:24px auto}@page{margin:1.5cm}}'
+    +'</style></head><body>'
+    +'<h1>'+esc(title+filterLabel)+'</h1>'
+    +'<div class="meta">Beats &mdash; Generated '+dateStr+'</div>'
+    +body
+    +'</body></html>';
+
+  const w=window.open('','_blank');
+  if(w){w.document.write(html);w.document.close();setTimeout(()=>w.print(),400);}
+}
+
 doLoad();
 </script>
 
-<div style="text-align:center;padding:24px 0 8px;font-size:11px;color:#b4b2a9;font-family:-apple-system,BlinkMacSystemFont,sans-serif">Screenplay Cards &middot; created by Peter Carrillo &amp; Claude (Anthropic) &middot; open source &middot; <a href="mailto:screenplaycards@gmail.com" style="color:#b4b2a9;text-decoration:none">screenplaycards@gmail.com</a></div>
+<div style="text-align:center;padding:24px 0 8px;font-size:11px;color:#b4b2a9;font-family:-apple-system,BlinkMacSystemFont,sans-serif">Screenplay Cards &middot; designed by Peter Carrillo, built with Claude (Anthropic) &middot; open source &middot; <a href="mailto:screenplaycards@gmail.com" style="color:#b4b2a9;text-decoration:none">screenplaycards@gmail.com</a></div>
 </body>
 </html>
