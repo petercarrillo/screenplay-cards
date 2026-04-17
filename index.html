@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Screenplay Cards</title>
+<meta name="description" content="A free, open source index card tool for organizing screenplay beats and scenes. Created by Peter Carrillo.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f4f0;color:#1a1a18;line-height:1.6}
+a{color:#185FA5;text-decoration:none}
+a:hover{text-decoration:underline}
+
+header{background:#1a1a18;color:#f5f4f0;padding:3rem 2rem 2.5rem;text-align:center}
+header h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:700;letter-spacing:-0.02em;margin-bottom:0.5rem}
+header p{font-size:1.1rem;color:#888780;max-width:520px;margin:0 auto 2rem}
+.dl-btn{display:inline-block;background:#f5f4f0;color:#1a1a18;font-size:1rem;font-weight:600;padding:0.75rem 2rem;border-radius:8px;margin:0.25rem}
+.dl-btn:hover{background:#fff;text-decoration:none}
+.dl-btn.secondary{background:transparent;color:#f5f4f0;border:1px solid #444441}
+.dl-btn.secondary:hover{background:#2c2c2a;text-decoration:none}
+
+.badge{display:inline-block;font-size:0.75rem;padding:3px 10px;border-radius:20px;background:#2c2c2a;color:#888780;margin-bottom:1.5rem;letter-spacing:0.05em}
+
+section{max-width:860px;margin:0 auto;padding:3rem 2rem}
+h2{font-size:1.5rem;font-weight:600;margin-bottom:1rem;color:#1a1a18}
+h3{font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;color:#1a1a18}
+
+.features{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-top:1.5rem}
+.feat{background:#fff;border:0.5px solid #d3d1c7;border-radius:12px;padding:1.25rem}
+.feat-icon{width:32px;height:32px;border-radius:8px;margin-bottom:0.75rem;display:flex;align-items:center;justify-content:center;font-size:16px}
+.feat h3{font-size:0.95rem;margin-bottom:0.25rem}
+.feat p{font-size:0.875rem;color:#5f5e5a;line-height:1.5}
+
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-top:1.5rem}
+.video-card{background:#fff;border:0.5px solid #d3d1c7;border-radius:12px;overflow:hidden}
+.video-thumb{background:#e8e6e0;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:0.875rem;color:#888780}
+.video-card p{padding:0.75rem 1rem;font-size:0.875rem;font-weight:500;color:#1a1a18}
+
+.steps{counter-reset:step;margin-top:1.5rem;display:flex;flex-direction:column;gap:1rem}
+.step{display:flex;gap:1rem;align-items:flex-start}
+.step-num{counter-increment:step;content:counter(step);min-width:28px;height:28px;border-radius:50%;background:#1a1a18;color:#f5f4f0;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-body h3{font-size:0.95rem;margin-bottom:0.2rem}
+.step-body p{font-size:0.875rem;color:#5f5e5a}
+.step-body code{background:#f1efe8;padding:1px 5px;border-radius:4px;font-family:monospace;font-size:0.85rem}
+
+.downloads{display:flex;flex-wrap:wrap;gap:0.75rem;margin-top:1.5rem}
+.dl-card{background:#fff;border:0.5px solid #d3d1c7;border-radius:10px;padding:1rem 1.25rem;display:flex;align-items:center;gap:0.75rem;min-width:200px}
+.dl-card-icon{width:36px;height:36px;border-radius:8px;background:#f1efe8;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.dl-card-text{flex:1}
+.dl-card-text strong{display:block;font-size:0.9rem;margin-bottom:1px}
+.dl-card-text span{font-size:0.78rem;color:#888780}
+.dl-card a{font-size:0.8rem;font-weight:600;white-space:nowrap}
+
+.divider{border:none;border-top:0.5px solid #d3d1c7;margin:0 2rem}
+
+.about{background:#fff;border-radius:16px;border:0.5px solid #d3d1c7;padding:2rem;margin-top:1.5rem;font-size:0.95rem;color:#444441;line-height:1.7}
+.about strong{color:#1a1a18}
+
+footer{text-align:center;padding:2rem;font-size:0.8rem;color:#888780;border-top:0.5px solid #d3d1c7;margin-top:2rem}
+footer a{color:#888780}
+
+@media(prefers-color-scheme:dark){
+  body{background:#1a1a18;color:#e8e6e0}
+  header{background:#0f0f0e}
+  .badge{background:#2c2c2a;color:#888780}
+  .feat,.video-card,.dl-card,.about{background:#2c2c2a;border-color:#444441}
+  .feat p,.step-body p,.dl-card-text span{color:#888780}
+  h2,h3,.feat h3,.step-body h3,.dl-card-text strong,.about strong{color:#e8e6e0}
+  .about{color:#b4b2a9}
+  .video-thumb{background:#1c1c1a}
+  .feat-icon,.dl-card-icon,.step-body code{background:#1c1c1a}
+  .step-body code{color:#e8e6e0}
+  footer{border-color:#2c2c2a}
+  .divider{border-color:#2c2c2a}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">open source &middot; free &middot; no account required</div>
+  <h1>Screenplay Cards</h1>
+  <p>A digital index card system for organizing your screenplay. Built for writers, by a writer.</p>
+  <a href="screenplay-cards.html" download class="dl-btn">Download the app</a>
+  <a href="screenplay-cards-guide.pdf" class="dl-btn secondary">User guide (PDF)</a>
+  <p style="margin-top:1.5rem;font-size:0.85rem;color:#5f5e5a;max-width:480px;margin-left:auto;margin-right:auto">This app is actively developed. Check back regularly for new features, improvements, and bug fixes &mdash; just re-download the file to get the latest version. Your saved data carries over automatically.</p>
+</header>
+
+<section>
+  <h2>What it is</h2>
+  <p>Screenplay Cards is a single HTML file that runs entirely in your browser — no installation, no account, no internet required after download. It replicates the classic index card workflow screenwriters have used for decades, with a few things physical cards can never do.</p>
+
+  <div class="features">
+    <div class="feat">
+      <div class="feat-icon">&#9635;</div>
+      <h3>Two-sided cards</h3>
+      <p>Scene title on the front, notes on the back. Flip individual cards or all at once.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">&#9632;</div>
+      <h3>Color coding</h3>
+      <p>Multi-color accent bars and fill colors with a per-project legend. Spotlight any color to see where it falls in the script.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">&#9633;</div>
+      <h3>Act filtering</h3>
+      <p>Name a card ACT ONE and exclude it from scene numbering — the app detects it as a structural divider and builds a filter strip automatically.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">&#9671;</div>
+      <h3>Multiple projects</h3>
+      <p>Keep different screenplays in separate project tabs, each with its own cards and color legend.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">&#9670;</div>
+      <h3>Fit all view</h3>
+      <p>Scale every card to fit the screen at once for a true bird's eye view of your whole structure.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">&#9679;</div>
+      <h3>Outline export</h3>
+      <p>Generate a clean numbered scene outline — titles as headings, notes as body text — ready to print or save as PDF.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section>
+  <h2>Getting started</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Download the app</h3>
+        <p>Click the download button above. You get a single file: <code>screenplay-cards.html</code></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Put it somewhere that syncs</h3>
+        <p>Move it into your iCloud Drive, Dropbox, or OneDrive folder so it's always backed up. Always open it from the same location.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Open it in your browser</h3>
+        <p>Double-click the file. It opens in Safari, Chrome, Firefox, or Edge. No installation needed.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Back up regularly</h3>
+        <p>Hit <strong>export</strong> in the toolbar every so often. It saves a <code>.json</code> file with all your cards that you can restore at any time with <strong>import</strong>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section>
+  <h2>Videos</h2>
+  <p>Step-by-step walkthroughs coming soon. Check back here or reach out if you have questions.</p>
+  <div class="video-grid">
+    <div class="video-card">
+      <div class="video-thumb">coming soon</div>
+      <p>Getting started &amp; setup</p>
+    </div>
+    <div class="video-card">
+      <div class="video-thumb">coming soon</div>
+      <p>Cards, colors &amp; the legend</p>
+    </div>
+    <div class="video-card">
+      <div class="video-thumb">coming soon</div>
+      <p>Act filtering &amp; views</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section>
+  <h2>Downloads</h2>
+  <div class="downloads">
+    <div class="dl-card">
+      <div class="dl-card-icon">&#9632;</div>
+      <div class="dl-card-text">
+        <strong>Screenplay Cards</strong>
+        <span>The app &middot; single HTML file</span>
+      </div>
+      <a href="screenplay-cards.html" download>Download</a>
+    </div>
+    <div class="dl-card">
+      <div class="dl-card-icon">&#9633;</div>
+      <div class="dl-card-text">
+        <strong>User Guide</strong>
+        <span>PDF &middot; full instructions</span>
+      </div>
+      <a href="screenplay-cards-guide.pdf">View</a>
+    </div>
+    <div class="dl-card">
+      <div class="dl-card-icon">&#9671;</div>
+      <div class="dl-card-text">
+        <strong>User Guide</strong>
+        <span>Word doc &middot; .docx</span>
+      </div>
+      <a href="screenplay-cards-guide.docx" download>Download</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section>
+  <h2>About</h2>
+  <div class="about">
+    <p>Screenplay Cards was built in April 2026 through a collaborative conversation between a writer and an AI &mdash; <strong>Peter Carrillo</strong> and <strong>Claude (Anthropic)</strong>. It started as a personal tool to assist in the writing of screenplays, and is offered freely to any writer who finds it useful. It is open source &mdash; modify it, improve it, pass it on.</p>
+    <br>
+    <p>Built with HTML, CSS, and vanilla JavaScript. No frameworks. No server. No internet required. 819 lines of code in a single file.</p>
+    <br>
+    <p>If you have suggestions, feature requests, or just want to say hello: <a href="mailto:screenplaycards@gmail.com"><strong>screenplaycards@gmail.com</strong></a></p>
+  </div>
+</section>
+
+<footer>
+  Screenplay Cards &middot; created by Peter Carrillo &amp; Claude (Anthropic) &middot; open source &middot;
+  <a href="mailto:screenplaycards@gmail.com">screenplaycards@gmail.com</a>
+</footer>
+
+</body>
+</html>
