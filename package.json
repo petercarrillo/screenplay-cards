@@ -27,7 +27,7 @@
     "copyright": "Copyright \u00a9 2026 Peter Carrillo",
     "mac": {
       "category": "public.app-category.productivity",
-      "icon": "assets/icon.icns",
+      "icon": "icon.icns",
       "target": [
         {
           "target": "dmg",
@@ -37,13 +37,11 @@
           ]
         }
       ],
-      "darkModeSupport": true,
-      "identity": null,
-      "forceCodeSigning": false
+      "darkModeSupport": true
     },
     "dmg": {
       "title": "Screenplay Cards",
-      "icon": "assets/icon.icns",
+      "icon": "icon.icns",
       "artifactName": "${productName}-${arch}.dmg",
       "window": {
         "width": 540,
