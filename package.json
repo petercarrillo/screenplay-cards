@@ -1,0 +1,70 @@
+{
+  "name": "screenplay-cards",
+  "productName": "Screenplay Cards",
+  "version": "1.0.2",
+  "description": "A digital index card tool for organizing screenplay beats and scenes.",
+  "main": "main.js",
+  "author": {
+    "name": "Peter Carrillo",
+    "email": "screenplaycards@gmail.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --mac",
+    "pack": "electron-builder --dir"
+  },
+  "dependencies": {
+    "electron-updater": "^6.1.7"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.petercarrillo.screenplay-cards",
+    "productName": "Screenplay Cards",
+    "copyright": "Copyright \u00a9 2026 Peter Carrillo",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "assets/icon.icns",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "darkModeSupport": true,
+      "identity": null,
+      "forceCodeSigning": false
+    },
+    "dmg": {
+      "title": "Screenplay Cards",
+      "icon": "assets/icon.icns",
+      "artifactName": "${productName}-${arch}.dmg",
+      "window": {
+        "width": 540,
+        "height": 380
+      }
+    },
+    "fileAssociations": [
+      {
+        "ext": "screenplaycards",
+        "name": "Screenplay Cards Project",
+        "description": "Screenplay Cards project file",
+        "role": "Editor"
+      }
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "petercarrillo",
+        "repo": "screenplay-cards"
+      }
+    ],
+    "afterPack": "./afterPack.js"
+  }
+}
