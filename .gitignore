@@ -1,0 +1,7 @@
+Certificates.p12
+patch_main.py
+patch_undo.py
+.DS_Store
+node_modules/
+package-lock.json
+dist/
