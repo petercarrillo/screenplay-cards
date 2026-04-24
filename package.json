@@ -24,20 +24,20 @@
   "build": {
     "appId": "com.petercarrillo.screenplay-cards",
     "productName": "Screenplay Cards",
-    "copyright": "Copyright \u00a9 2026 Peter Carrillo",
+    "copyright": "Copyright © 2026 Peter Carrillo",
     "mac": {
       "category": "public.app-category.productivity",
       "icon": "assets/icon.icns",
       "target": [
-  {
-    "target": "dmg",
-    "arch": ["x64", "arm64"]
-  },
-  {
-    "target": "zip",
-    "arch": ["x64", "arm64"]
-  }
-],
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
+      ],
       "darkModeSupport": true
     },
     "dmg": {
@@ -48,6 +48,9 @@
         "width": 540,
         "height": 380
       }
+    },
+    "zip": {
+      "artifactName": "Screenplay-Cards-${version}-${arch}-mac.zip"
     },
     "fileAssociations": [
       {
