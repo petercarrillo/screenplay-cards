@@ -288,7 +288,15 @@ function setupAutoUpdater() {
       detail,
       buttons: ['Download', 'Later'], defaultId: 0,
     }).then(({ response }) => {
-      if (response === 0) autoUpdater.downloadUpdate();
+      if (response === 0) {
+        autoUpdater.downloadUpdate();
+        dialog.showMessageBox(mainWindow, {
+          type: 'info', title: 'Downloading Update',
+          message: 'Downloading update in the background.',
+          detail: 'Screenplay Cards will restart automatically when the download is complete.',
+          buttons: ['OK'], defaultId: 0,
+        });
+      }
     });
   });
 
