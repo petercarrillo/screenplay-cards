@@ -324,16 +324,15 @@ function setupAutoUpdater() {
   });
 
   autoUpdater.on('error', (err) => {
-    if (manualUpdateCheck) {
-      manualUpdateCheck = false;
-      dialog.showMessageBox(mainWindow, {
-        type: 'warning', title: 'Update Check Failed',
-        message: 'Could not check for updates.',
-        detail: 'Please check your internet connection and try again.',
-        buttons: ['OK'],
-      });
-    }
+    manualUpdateCheck = false;
     console.log('Updater error:', err.message);
+    if (!mainWindow) return;
+    dialog.showMessageBox(mainWindow, {
+      type: 'warning', title: 'Update Failed',
+      message: 'Could not download the update.',
+      detail: err.message || 'Please check your internet connection and try again.',
+      buttons: ['OK'],
+    });
   });
 }
 
