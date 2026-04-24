@@ -1,7 +1,7 @@
 {
   "name": "screenplay-cards",
   "productName": "Screenplay Cards",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "description": "A digital index card tool for organizing screenplay beats and scenes.",
   "main": "main.js",
   "author": {
