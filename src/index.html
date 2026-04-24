@@ -24,6 +24,7 @@ button:hover{background:#f1efe8}
 .vtog{display:flex;border:0.5px solid #b4b2a9;border-radius:8px;overflow:hidden}
 .vtog button{border:none;border-radius:0;padding:5px 12px;font-size:12px;background:transparent}
 .vtog button.on{background:#e8e6e0}
+.tbtn-on{background:#e8e6e0!important;font-weight:500}
 .astrip{margin-bottom:10px;padding:8px 12px;border:0.5px solid #b4b2a9;border-radius:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#ece9e3}
 .actbtn{font-size:12px;padding:4px 10px;border:0.5px solid #b4b2a9;border-radius:20px;background:transparent;color:#5f5e5a;cursor:pointer;font-family:inherit}
 .actbtn:hover{background:#ece9e3;color:#1a1a18}
@@ -90,6 +91,7 @@ button:hover{background:#f1efe8}
   .ptab.active{background:#2c2c2a;color:#e8e6e0;border-color:#5f5e5a}
   .pbar{border-color:#444441}
   .vtog button.on{background:#444441}
+  .tbtn-on{background:#444441!important;font-weight:500}
   .astrip{background:#242422;border-color:#444441}
   .astrip.warn{background:#501313;border-color:#a32d2d}
   .astrip button.dbtn{background:#501313;color:#f09595;border-color:#a32d2d}
@@ -420,7 +422,7 @@ function doDel(){
 
 function openCP(cardId,mode){
   const m=mode||'border';
-  if(cpPanel===m&&cpId===cardId){cpPanel=null;cpId=null;renderSW();return;}
+  if(cpPanel===m&&cpId===cardId){cpPanel=null;cpId=null;const hadSpot=colorSpot.size>0;colorSpot.clear();renderSW();renderTbar();if(hadSpot)renderBoard();return;}
   cpPanel=m;cpId=cardId;pend=null;renderSW();
 }
 function toggleColor(cardId,k){
@@ -435,7 +437,7 @@ function setBgColor(cardId,k){
   const c=C().find(x=>x.id===cardId);if(!c)return;
   pushH();c.bgColor=(k==='none'?null:k);sched();renderBoard();renderSW();
 }
-function cancel(){pend=null;cpPanel=null;cpId=null;renderSW();}
+function cancel(){pend=null;cpPanel=null;cpId=null;const hadSpot=colorSpot.size>0;colorSpot.clear();renderSW();if(hadSpot){renderBoard();renderTbar();}}
 
 function setFS(cardId,val){
   const c=C().find(x=>x.id===cardId);if(!c)return;
@@ -513,6 +515,7 @@ function renderTbar(){
     <button id="flowbtn" title="toggle card flow direction">${colFlow?'→ rows':'↓ cols'}</button>
     <button id="outbtn">outline</button>
     <button id="beatsbtn">beats</button>
+    <button id="filtbtn" class="${(cpPanel==='border'&&cpId===null)||colorSpot.size>0?'tbtn-on':''}">filter</button>
     <span class="ctr"><span class="sdot" id="sdot"></span><span id="cnt">${countedScenes().length} scene${countedScenes().length===1?'':'s'}</span></span>
     <span style="color:#d3d1c7;margin:0 2px">|</span>
     <div id="actbar" style="display:flex;gap:4px;align-items:center;flex-wrap:nowrap"></div>
@@ -526,6 +529,7 @@ function renderTbar(){
   document.getElementById('flowbtn').addEventListener('click',toggleFlow);
   document.getElementById('outbtn').addEventListener('click',printOutline);
   document.getElementById('beatsbtn').addEventListener('click',printBeats);
+  document.getElementById('filtbtn').addEventListener('click',()=>openCP(null,'border'));
   document.getElementById('fscrn').addEventListener('click',toggleFS);
   updateFSBtn();
   renderActBar();
@@ -562,7 +566,7 @@ function renderSW(){
         if(e.target===inp)return;
         e.stopPropagation();
         if(c){toggleColor(c.id,cl.k);}
-        else{if(colorSpot.has(cl.k))colorSpot.delete(cl.k);else colorSpot.add(cl.k);renderSW();renderBoard();}
+        else{if(colorSpot.has(cl.k))colorSpot.delete(cl.k);else colorSpot.add(cl.k);renderSW();renderBoard();renderTbar();}
       });
       wrap.appendChild(dot);wrap.appendChild(inp);d.appendChild(wrap);
     });
