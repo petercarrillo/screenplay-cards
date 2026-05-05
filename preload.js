@@ -20,6 +20,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // App info
   getVersion: () => ipcRenderer.invoke('app:get-version'),
   checkForUpdates: () => ipcRenderer.invoke('app:check-for-updates'),
+  getWelcomeData: () => ipcRenderer.invoke('app:get-welcome-data'),
+  setShowWelcome: (val) => ipcRenderer.invoke('prefs:set-show-welcome', val),
 
   // Context menu
   showContextMenu: (options) => ipcRenderer.invoke('context:show', options),
@@ -45,6 +47,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
       'app:set-view',
       'app:print-outline',
       'app:print-beats',
+      'app:print-summary',
     ];
     if (allowed.includes(channel)) {
       const wrapped = (e, ...args) => fn(...args);

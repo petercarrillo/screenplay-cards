@@ -6,6 +6,7 @@ const fs = require('fs');
 // ── App state ──────────────────────────────────────────────────────────────────
 let mainWindow = null;
 let recentFiles = [];
+let showWelcomePref = true;
 const userDataPath = app.getPath('userData');
 const prefsPath = path.join(userDataPath, 'prefs.json');
 
@@ -15,6 +16,7 @@ function loadPrefs() {
     if (fs.existsSync(prefsPath)) {
       const p = JSON.parse(fs.readFileSync(prefsPath, 'utf8'));
       recentFiles = p.recentFiles || [];
+      showWelcomePref = p.showWelcome !== false;
     }
   } catch (e) { recentFiles = []; }
 }
@@ -22,7 +24,7 @@ function loadPrefs() {
 function savePrefs() {
   try {
     fs.mkdirSync(userDataPath, { recursive: true });
-    fs.writeFileSync(prefsPath, JSON.stringify({ recentFiles }), 'utf8');
+    fs.writeFileSync(prefsPath, JSON.stringify({ recentFiles, showWelcome: showWelcomePref }), 'utf8');
   } catch (e) {}
 }
 
@@ -143,6 +145,22 @@ function openFile(filePath) {
       return;
     }
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    // Cloud sync check — warn if file on disk is newer than last known save
+    if (data.savedAt) {
+      const stat = fs.statSync(filePath);
+      const savedAt = new Date(data.savedAt).getTime();
+      if (stat.mtimeMs > savedAt + 10000) {
+        const result = dialog.showMessageBoxSync(mainWindow, {
+          type: 'warning',
+          title: 'File May Have Changed',
+          message: 'This file appears to have been modified outside the app.',
+          detail: `This can happen when a cloud sync service (iCloud, Dropbox, Google Drive) has updated the file from another device.\n\nLast saved: ${new Date(savedAt).toLocaleString()}\nFile on disk: ${new Date(stat.mtimeMs).toLocaleString()}\n\nOpen it anyway?`,
+          buttons: ['Open Anyway', 'Cancel'],
+          defaultId: 0,
+        });
+        if (result === 1) return;
+      }
+    }
     mainWindow.webContents.send('app:file-opened', { data, filePath });
     mainWindow.setRepresentedFilename(filePath);
     mainWindow.setTitle(data.name || path.basename(filePath, '.screenplaycards'));
@@ -160,6 +178,8 @@ function openFileDialog() {
   });
   if (result && result[0]) {
     mainWindow.webContents.send('app:check-dirty-then-open', result[0]);
+  } else {
+    mainWindow.webContents.send('app:open-cancelled');
   }
 }
 
@@ -268,6 +288,9 @@ ipcMain.handle('context:show', (e, opts) => {
     resolve();
   });
 });
+
+ipcMain.handle('app:get-welcome-data', () => ({ showWelcome: showWelcomePref, recentFiles }));
+ipcMain.handle('prefs:set-show-welcome', (e, val) => { showWelcomePref = val; savePrefs(); });
 
 // ── Auto-updater ───────────────────────────────────────────────────────────────
 let manualUpdateCheck = false;
@@ -414,6 +437,7 @@ function buildMenu() {
         { type: 'separator' },
         { label: 'Print Outline…', click: () => mainWindow && mainWindow.webContents.send('app:print-outline') },
         { label: 'Print Beat Sheet…', click: () => mainWindow && mainWindow.webContents.send('app:print-beats') },
+        { label: 'Print Scene Summary…', click: () => mainWindow && mainWindow.webContents.send('app:print-summary') },
       ],
     },
     {

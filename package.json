@@ -1,7 +1,7 @@
 {
   "name": "screenplay-cards",
   "productName": "Screenplay Cards",
-  "version": "1.7.4",
+  "version": "2.0.0",
   "description": "A digital index card tool for organizing screenplay beats and scenes.",
   "main": "main.js",
   "author": {
@@ -65,6 +65,21 @@
         "repo": "screenplay-cards"
       }
     ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "Screenplay-Cards-Setup-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
     "files": [
       "main.js",
       "preload.js",
