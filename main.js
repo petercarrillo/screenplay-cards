@@ -7,6 +7,7 @@ const fs = require('fs');
 let mainWindow = null;
 let recentFiles = [];
 let showWelcomePref = true;
+let windowBounds = null;
 const userDataPath = app.getPath('userData');
 const prefsPath = path.join(userDataPath, 'prefs.json');
 
@@ -17,6 +18,7 @@ function loadPrefs() {
       const p = JSON.parse(fs.readFileSync(prefsPath, 'utf8'));
       recentFiles = p.recentFiles || [];
       showWelcomePref = p.showWelcome !== false;
+      windowBounds = p.windowBounds || null;
     }
   } catch (e) { recentFiles = []; }
 }
@@ -24,7 +26,7 @@ function loadPrefs() {
 function savePrefs() {
   try {
     fs.mkdirSync(userDataPath, { recursive: true });
-    fs.writeFileSync(prefsPath, JSON.stringify({ recentFiles, showWelcome: showWelcomePref }), 'utf8');
+    fs.writeFileSync(prefsPath, JSON.stringify({ recentFiles, showWelcome: showWelcomePref, windowBounds }), 'utf8');
   } catch (e) {}
 }
 
@@ -42,9 +44,12 @@ function removeRecentFile(filePath) {
 
 // ── Window ─────────────────────────────────────────────────────────────────────
 function createWindow(filePath = null) {
+  const bounds = windowBounds || { width: 1280, height: 800 };
   mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 800,
+    width: bounds.width,
+    height: bounds.height,
+    x: bounds.x,
+    y: bounds.y,
     minWidth: 800,
     minHeight: 600,
     titleBarStyle: 'hiddenInset',
@@ -64,6 +69,14 @@ function createWindow(filePath = null) {
     mainWindow.show();
     if (filePath) openFile(filePath);
   });
+
+  const saveBounds = () => {
+    if (!mainWindow || mainWindow.isMaximized() || mainWindow.isMinimized()) return;
+    windowBounds = mainWindow.getBounds();
+    savePrefs();
+  };
+  mainWindow.on('resize', saveBounds);
+  mainWindow.on('move', saveBounds);
 
   // ── Context menu: spell check + formatting ─────────────────────────────────
   mainWindow.webContents.on('context-menu', (event, params) => {
@@ -178,8 +191,6 @@ function openFileDialog() {
   });
   if (result && result[0]) {
     mainWindow.webContents.send('app:check-dirty-then-open', result[0]);
-  } else {
-    mainWindow.webContents.send('app:open-cancelled');
   }
 }
 
