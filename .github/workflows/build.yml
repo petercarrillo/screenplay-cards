@@ -49,12 +49,12 @@ jobs:
       - name: Upload release assets
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v2.1.0
+          tag_name: v2.0.0
           files: |
-            dist/Screenplay Cards-arm64.dmg
-            dist/Screenplay Cards-x64.dmg
+            dist/Screenplay-Cards-arm64.dmg
+            dist/Screenplay-Cards-x64.dmg
+            dist/Screenplay-Cards-*-arm64-mac.zip
+            dist/Screenplay-Cards-*-x64-mac.zip
             dist/latest-mac.yml
-            dist/Screenplay Cards-arm64.dmg.blockmap
-            dist/Screenplay Cards-x64.dmg.blockmap
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
