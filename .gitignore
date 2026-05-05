@@ -5,3 +5,5 @@ patch_undo.py
 node_modules/
 package-lock.json
 dist/
+Certificates.p12
+_archive/
