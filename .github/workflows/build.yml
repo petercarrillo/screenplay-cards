@@ -52,8 +52,8 @@ jobs:
         with:
           tag_name: v2.0.0
           files: |
-            dist/Screenplay-Cards-*-arm64-mac.dmg
-            dist/Screenplay-Cards-*-x64-mac.dmg
+            dist/Screenplay-Cards-arm64-mac.dmg
+            dist/Screenplay-Cards-x64-mac.dmg
             dist/Screenplay-Cards-*-arm64-mac.zip
             dist/Screenplay-Cards-*-x64-mac.zip
             dist/latest-mac.yml
