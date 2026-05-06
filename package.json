@@ -28,7 +28,6 @@
     "mac": {
       "category": "public.app-category.productivity",
       "icon": "assets/icon.icns",
-      "artifactName": "Screenplay-Cards-${arch}-mac.${ext}",
       "target": [
         {
           "target": "dmg",
@@ -50,6 +49,7 @@
     "dmg": {
       "title": "Screenplay Cards",
       "icon": "assets/icon.icns",
+      "artifactName": "Screenplay-Cards-${arch}-mac.dmg",
       "window": {
         "width": 540,
         "height": 380
