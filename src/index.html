@@ -289,6 +289,9 @@ function loadFromData(data){
     });
     nid=data.nid||1;
     writer=data.writer||'';
+    // Migrate: project-level notes (new) or collect from boards (old per-board format)
+    if(data.notes){projectNotes=data.notes;}
+    else{projectNotes=[];data.boards.forEach(b=>{if(b.notes&&b.notes.length)projectNotes=projectNotes.concat(b.notes);});}
   }
   hist=[];actFilter.clear();colorSpot.clear();cpPanel=null;cpId=null;collapsedActs.clear();selectedCards.clear();selMode=false;linkHighlight=null;
   Object.values(byB).forEach(arr=>{if(Array.isArray(arr))arr.forEach(migrateColors);});
