@@ -407,10 +407,17 @@ async function doLoad(){
       // 6-second fallback in case signal never arrives
       setTimeout(()=>{if(!done){done=true;resolve();}},6000);
     });
+    // If a file was opened while we were waiting, don't interfere
+    if(currentFilePath)return;
+    // Brief pause to let any in-flight app:file-opened arrive before we act
+    await new Promise(r=>setTimeout(r,400));
+    if(currentFilePath)return;
     try{
       const d=await window.electronAPI.getWelcomeData();
       if(d.showWelcome&&!currentFilePath){showWelcomePanel();return;}
     }catch(e){}
+    if(!currentFilePath)startFreshProject();
+    return;
   }
   startFreshProject();
 }
