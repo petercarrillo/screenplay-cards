@@ -1,424 +1,569 @@
 {
-  "version": "1.0",
-  "name": "Hamlet Sample Beats/Outline",
-  "curP": "p1",
-  "cards": [
+  "version": "2.0",
+  "writer": "",
+  "curB": "p1",
+  "boards": [
     {
-      "id": 1,
-      "title": "ACT ONE",
-      "notes": "",
-      "colors": [],
-      "fs": 33,
-      "nocount": true,
-      "sn": null,
-      "bgColor": "amber"
-    },
-    {
-      "id": 2,
-      "title": "The ghost appears on the battlements",
-      "notes": "Night. Elsinore castle. Guards BERNARDO and FRANCISCO are relieved by HORATIO and MARCELLUS. The ghost of the dead King appears — silent, armored, unmistakable.\n\nHoratio, the skeptic, is shaken. He knows what this means.\n\nOpen on the cold and the dark. Establish dread before a word of plot.",
-      "colors": [
-        "pink"
+      "id": "p1",
+      "name": "Hamlet Sample Beats/Outline",
+      "cards": [
+        {
+          "id": 1,
+          "title": "ACT ONE",
+          "notes": "",
+          "colors": [],
+          "fs": 33,
+          "nocount": true,
+          "sn": null,
+          "bgColor": "amber"
+        },
+        {
+          "id": 2,
+          "title": "The ghost appears on the battlements",
+          "notes": "Night. Elsinore castle. Guards BERNARDO and FRANCISCO are relieved by HORATIO and MARCELLUS. The ghost of the dead King appears — silent, armored, unmistakable.\n\nHoratio, the skeptic, is shaken. He knows what this means.\n\nOpen on the cold and the dark. Establish dread before a word of plot.",
+          "colors": [
+            "pink"
+          ],
+          "fs": 14,
+          "nocount": false,
+          "sn": 1
+        },
+        {
+          "id": 3,
+          "title": "Horatio tells Hamlet what he saw",
+          "notes": "Horatio finds HAMLET, still in mourning blacks two months after his father's death. Tells him about the ghost.\n\nHamlet's reaction: not fear. Hunger. He will go tonight.\n\nThis is our first look at Hamlet — brilliant, restless, already coiled.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 2
+        },
+        {
+          "id": 4,
+          "title": "The court celebrates Claudius's marriage",
+          "notes": "The new King CLAUDIUS presides over a glittering court. He has married GERTRUDE — Hamlet's mother, his dead brother's wife — within two months of the funeral.\n\nClaudius is charming, confident, politically shrewd. He is also a murderer, though no one knows it yet.\n\nHamlet stands apart. He cannot fake the celebration.",
+          "colors": [
+            "coral"
+          ],
+          "fs": 14,
+          "nocount": false,
+          "sn": 3
+        },
+        {
+          "id": 5,
+          "title": "Hamlet's first soliloquy — 'Oh that this too solid flesh'",
+          "notes": "Hamlet alone. He wants to die but cannot. He is disgusted by his mother's remarriage, by the speed of it, by her apparent happiness.\n\n'Frailty, thy name is woman.'\n\nThis is the first time we're inside his head. Establish the gap between what he shows the world and what he actually feels. It's enormous.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 4
+        },
+        {
+          "id": 6,
+          "title": "Laertes warns Ophelia away from Hamlet",
+          "notes": "LAERTES, preparing to return to France, tells his sister OPHELIA to be careful of Hamlet. Princes don't marry where they love.\n\nTheir father POLONIUS adds his own warning — and his own rules. Ophelia is to have no more contact with Hamlet.\n\nOphelia agrees. She always agrees. That's the tragedy.",
+          "colors": [
+            "teal"
+          ],
+          "fs": 14,
+          "nocount": false,
+          "sn": 5
+        },
+        {
+          "id": 7,
+          "title": "The ghost speaks — 'I am thy father's spirit'",
+          "notes": "Hamlet follows the ghost to the cliff's edge. The ghost reveals the truth: Claudius poured poison in his ear while he slept. He was murdered.\n\n'If thou didst ever thy dear father love — revenge his foul and most unnatural murder.'\n\nThis is the inciting wound. Everything that follows comes from this moment. Play it huge.",
+          "colors": [
+            "pink"
+          ],
+          "fs": 14,
+          "nocount": false,
+          "sn": 6
+        },
+        {
+          "id": 8,
+          "title": "Hamlet swears Horatio and Marcellus to secrecy",
+          "notes": "Hamlet makes his companions swear on his sword never to reveal what they've seen. He tells them he may choose to 'put an antic disposition on' — to act mad.\n\nThis is Hamlet's first decision. He will not act immediately. He will think. He will test.\n\nThe ghost's voice from underground: 'Swear.'",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 7
+        },
+        {
+          "id": 9,
+          "title": "Hamlet adopts his 'antic disposition'",
+          "notes": "Hamlet begins performing madness — erratic behavior, strange speeches, alarming visits to Ophelia.\n\nEveryone interprets it differently. Polonius thinks it's lovesickness. Claudius suspects something darker.\n\nOnly Horatio knows the truth. The audience knows. This double awareness drives the rest of the play.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 8
+        },
+        {
+          "id": 10,
+          "title": "ACT TWO",
+          "notes": "",
+          "colors": [],
+          "fs": 36,
+          "nocount": true,
+          "sn": null,
+          "bgColor": "amber"
+        },
+        {
+          "id": 11,
+          "title": "Claudius and Polonius spy on Hamlet",
+          "notes": "Claudius enlists ROSENCRANTZ and GUILDENSTERN — Hamlet's old friends — to spy on him and report back. Hamlet sees through it immediately.\n\nHe is delighted and wounded at once. Even his friends are instruments of the state now.\n\n'Denmark's a prison.'",
+          "colors": [
+            "coral"
+          ],
+          "fs": 14,
+          "nocount": false,
+          "sn": 9
+        },
+        {
+          "id": 12,
+          "title": "The players arrive at Elsinore",
+          "notes": "A traveling theater company arrives at court. Hamlet is genuinely happy for the first time — he loves theater.\n\nHe asks them to perform The Murder of Gonzago, and requests they insert a speech he will write.\n\nThe trap is being set. This is Hamlet at his most alive.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 10
+        },
+        {
+          "id": 13,
+          "title": "Hamlet's plan — 'The play's the thing'",
+          "notes": "Hamlet's second soliloquy. He berates himself for inaction compared to the actor who wept for Hecuba.\n\n'What's Hecuba to him, or he to Hecuba, that he should weep for her?'\n\nHis plan: use the play to watch Claudius's reaction and confirm his guilt. If the King flinches, the ghost told the truth.\n\nHe still doesn't fully trust the ghost. That matters.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 11
+        },
+        {
+          "id": 14,
+          "title": "Ophelia reports Hamlet's strange visit",
+          "notes": "Ophelia tells her father that Hamlet came to her room — disheveled, silent, staring. He held her face and sighed deeply, then left without a word.\n\nPolonius takes this as evidence of love-madness and rushes to tell the King.\n\nBut Hamlet was saying goodbye. He knew she'd been used against him.",
+          "colors": [
+            "teal"
+          ],
+          "fs": 14,
+          "nocount": false,
+          "sn": 12
+        },
+        {
+          "id": 15,
+          "title": "'To be or not to be'",
+          "notes": "Hamlet alone — or so he thinks. Claudius and Polonius are hidden, watching.\n\nHamlet contemplates suicide, death, the unknown. The fear of what comes after is what keeps us living.\n\nOphelia enters. Hamlet is tender, then cruel — he knows she's being used. 'Get thee to a nunnery.'\n\nOphelia's grief is real. Claudius watches and does not believe this is madness.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 13
+        },
+        {
+          "id": 16,
+          "title": "Claudius decides Hamlet must be sent to England",
+          "notes": "After the nunnery scene, Claudius confides to Polonius: Hamlet's behavior is not love-madness. There's something else in it. He will send Hamlet to England.\n\nPolonius suggests one more chance — he will hide in Gertrude's room and listen to their conversation.\n\nThe net is tightening around Hamlet even as he tightens his own net around Claudius.",
+          "colors": [
+            "coral"
+          ],
+          "fs": 14,
+          "nocount": false,
+          "sn": 14
+        },
+        {
+          "id": 17,
+          "title": "Hamlet instructs the players",
+          "notes": "Hamlet gives the players their direction: speak naturally, don't overact, hold the mirror up to nature.\n\nThis speech is Shakespeare on theater. But in the story it shows us Hamlet the artist — precise, passionate, certain.\n\nHe is never more confident than when he is directing someone else's performance.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 15
+        },
+        {
+          "id": 18,
+          "title": "The Mousetrap — the play within the play",
+          "notes": "The court assembles. The play begins. Hamlet watches Claudius watching the poisoning scene.\n\nClaudius rises. Calls for lights. Leaves.\n\nHamlet has his confirmation. He is almost giddy. Horatio confirms he saw it too.\n\nBut now Hamlet must act. And he still won't — not yet.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 16
+        },
+        {
+          "id": 19,
+          "title": "ACT TWO B",
+          "notes": "",
+          "colors": [],
+          "fs": 35,
+          "nocount": true,
+          "sn": null,
+          "bgColor": "amber"
+        },
+        {
+          "id": 20,
+          "title": "Rosencrantz and Guildenstern report to Claudius",
+          "notes": "Claudius questions Rosencrantz and Guildenstern about Hamlet. They've learned nothing useful.\n\nClaudius decides: Hamlet leaves for England immediately, with letters commanding his execution.\n\nRosencrantz and Guildenstern don't know what the letters say. They are carrying a death warrant for their friend.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 17
+        },
+        {
+          "id": 21,
+          "title": "Hamlet finds Claudius praying — and waits",
+          "notes": "Hamlet comes upon Claudius alone, on his knees, trying to pray. This is the moment — he could kill him now.\n\nHe doesn't. If Claudius dies at prayer, his soul goes to heaven. Hamlet's father was killed without last rites, his soul in torment.\n\nSo Hamlet waits for a worse moment. This is his fatal hesitation — or his moral precision. The play won't decide for you.",
+          "colors": [
+            "coral"
+          ],
+          "fs": 14,
+          "nocount": false,
+          "sn": 18
+        },
+        {
+          "id": 22,
+          "title": "Claudius cannot pray",
+          "notes": "A short, devastating soliloquy. Claudius knows he is damned. He cannot repent because he is unwilling to give up what the murder bought him — the crown, the queen.\n\n'My words fly up, my thoughts remain below.'\n\nHamlet spared a man who wasn't even successfully praying. The irony is crushing.",
+          "colors": [
+            "coral"
+          ],
+          "fs": 14,
+          "nocount": false,
+          "sn": 19
+        },
+        {
+          "id": 23,
+          "title": "Hamlet confronts Gertrude — Polonius is killed",
+          "notes": "Hamlet goes to Gertrude's room. They argue fiercely — Hamlet is brutal about her remarriage.\n\nA noise behind the arras. Hamlet stabs through it, certain it's Claudius.\n\nIt's Polonius.\n\nThis is the turning point. Hamlet has now killed an innocent man. Everything accelerates from here.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 20
+        },
+        {
+          "id": 24,
+          "title": "The ghost appears again — only Hamlet can see it",
+          "notes": "The ghost appears in Gertrude's room. Hamlet speaks to it. Gertrude sees nothing — she believes he is mad.\n\nThe ghost tells Hamlet to comfort his mother and not forget his purpose.\n\nHamlet tries to convince Gertrude that he is not mad, just mad in a particular direction. She doesn't know what to believe.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 21
+        },
+        {
+          "id": 25,
+          "title": "Hamlet drags Polonius's body away",
+          "notes": "Hamlet shows no remorse about killing Polonius — only a grim acknowledgment that heaven used him as its instrument.\n\nHe hides the body and refuses to tell Claudius where it is.\n\n'The body is with the king, but the king is not with the body.'\n\nHamlet is now dangerous in a different way — not just threatening, but actually lethal.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 22
+        },
+        {
+          "id": 26,
+          "title": "ACT THREE",
+          "notes": "",
+          "colors": [],
+          "fs": 30,
+          "nocount": true,
+          "sn": null,
+          "bgColor": "amber"
+        },
+        {
+          "id": 27,
+          "title": "Ophelia's madness",
+          "notes": "Ophelia enters — truly mad now. Her father is dead, killed by the man she loved. Hamlet has been sent away.\n\nShe distributes flowers with strange, fractured meanings. She sings.\n\nThis is the scene that should break the audience. Everything the play has done to her arrives here.\n\nHer madness is real. His was performance. The difference matters enormously.",
+          "colors": [
+            "teal"
+          ],
+          "fs": 14,
+          "nocount": false,
+          "sn": 23
+        },
+        {
+          "id": 28,
+          "title": "Laertes returns — furious, demanding answers",
+          "notes": "Laertes bursts back from France with an angry crowd at his back. His father is dead, buried in secret, no state funeral.\n\nHe confronts Claudius directly. Claudius is unruffled — he knows how to handle this.\n\nHe will use Laertes's grief as a weapon against Hamlet.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 24
+        },
+        {
+          "id": 29,
+          "title": "Claudius turns Laertes against Hamlet",
+          "notes": "Claudius tells Laertes it was Hamlet who killed his father. Laertes's grief becomes a blade pointed in the right direction.\n\nClaudius is at his most dangerous here — manipulating a son's love for his father into a murder weapon.\n\nThe parallel to Hamlet is not subtle. Both sons. Both fathers murdered. Completely different responses.",
+          "colors": [
+            "coral"
+          ],
+          "fs": 14,
+          "nocount": false,
+          "sn": 25
+        },
+        {
+          "id": 30,
+          "title": "Ophelia drowns",
+          "notes": "Gertrude delivers the news. Ophelia fell from a willow tree into a brook and drowned — singing, as if she didn't know what was happening.\n\nThe speech is famous. Play it quiet.\n\nLaertes breaks. He had no more tears, and now he has all of them.",
+          "colors": [
+            "teal"
+          ],
+          "fs": 14,
+          "nocount": false,
+          "sn": 26
+        },
+        {
+          "id": 31,
+          "title": "Hamlet returns — letters intercepted, Rosencrantz and Guildenstern sent to their deaths",
+          "notes": "Hamlet has returned from the sea voyage. He discovered Claudius's letters and rewrote them — substituting Rosencrantz and Guildenstern's names for his own.\n\nHe feels no guilt about it. They chose the wrong side.\n\nHoratio is disturbed. Hamlet is more resolved than we've ever seen him — and more dangerous.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 27
+        },
+        {
+          "id": 32,
+          "title": "The gravediggers — Yorick's skull",
+          "notes": "Hamlet and Horatio come upon gravediggers preparing Ophelia's grave. Hamlet handles a skull — it's Yorick, the court jester he knew as a child.\n\n'Alas, poor Yorick. I knew him, Horatio.'\n\nDeath is made concrete and personal. All the abstraction of the soliloquies collapses into a skull in his hands.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 28
+        },
+        {
+          "id": 33,
+          "title": "Hamlet at Ophelia's graveside",
+          "notes": "The funeral procession arrives. Hamlet doesn't know it's Ophelia until Laertes leaps into the grave.\n\nHamlet leaps in after him. They grapple.\n\nThis is grief finally breaking through Hamlet's control. He did love her. He never said it when it mattered.",
+          "colors": [
+            "teal"
+          ],
+          "fs": 14,
+          "nocount": false,
+          "sn": 29
+        },
+        {
+          "id": 34,
+          "title": "Claudius and Laertes finalize the plot",
+          "notes": "Claudius and Laertes plan the fencing match. Laertes's foil will be unbated and poisoned. Claudius will also poison a cup of wine as backup.\n\nTwo fail-safes. Hamlet cannot survive this.\n\nHamlet accepts the match without suspicion — or perhaps with a kind of fatalistic acceptance.",
+          "colors": [
+            "coral"
+          ],
+          "fs": 14,
+          "nocount": false,
+          "sn": 30
+        },
+        {
+          "id": 35,
+          "title": "Hamlet tells Horatio he is ready",
+          "notes": "Before the match, Hamlet tells Horatio he doesn't feel well about it — but he is ready.\n\n'There is a special providence in the fall of a sparrow. If it be now, 'tis not to come; if it be not to come, it will be now.'\n\nHamlet has made peace with death. The readiness is all.\n\nThis is the resolution of everything — not action, but acceptance.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 31
+        },
+        {
+          "id": 36,
+          "title": "The fencing match begins",
+          "notes": "The court assembles for the match. Claudius has the poisoned cup ready. Laertes has the poisoned foil.\n\nHamlet and Laertes fence. Hamlet scores the first hit.\n\nClaudius offers the poisoned cup. Hamlet defers. Gertrude drinks it instead.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 32
+        },
+        {
+          "id": 37,
+          "title": "Gertrude drinks the poison",
+          "notes": "Gertrude drinks from Claudius's cup before he can stop her.\n\nClaudius knows what's happening but says nothing. He watches his wife drink poison rather than expose himself.\n\nThis moment defines him completely.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 33
+        },
+        {
+          "id": 38,
+          "title": "Laertes wounds Hamlet — they exchange foils",
+          "notes": "Laertes wounds Hamlet with the poisoned blade. In the scuffle, they exchange foils.\n\nHamlet wounds Laertes with his own poisoned sword.\n\nBoth men are now dying. The trap has caught its maker.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 34
+        },
+        {
+          "id": 39,
+          "title": "Gertrude dies — Laertes confesses",
+          "notes": "Gertrude collapses. Laertes, knowing he is dying, tells Hamlet the truth: the foil was poisoned, Claudius arranged everything.\n\nHamlet finally acts. He stabs Claudius and forces the poisoned wine into his mouth.\n\nClaudius dies. Four people have died in this room in minutes.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 35
+        },
+        {
+          "id": 40,
+          "title": "Hamlet dies — 'The rest is silence'",
+          "notes": "Hamlet is dying. He asks Horatio not to drink from the cup — someone must survive to tell the story.\n\nHe names Fortinbras as the next King of Denmark.\n\n'The rest is silence.'\n\nDon't rush it. Let it land.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 36
+        },
+        {
+          "id": 41,
+          "title": "Fortinbras arrives — takes the kingdom",
+          "notes": "Fortinbras enters with his army, having just won Poland. He finds a room full of the dead.\n\nHe orders a soldier's funeral for Hamlet — 'he was likely, had he been put on, to have proved most royal.'\n\nThe political world reasserts itself over the personal tragedy. Denmark has a new king. The cycle begins again.",
+          "colors": [],
+          "fs": 14,
+          "nocount": false,
+          "sn": 37
+        }
       ],
-      "fs": 14,
-      "nocount": false,
-      "sn": 1
+      "legend": {
+        "red": "Hamlet",
+        "coral": "Claudius",
+        "amber": "Gertrude",
+        "teal": "Ophelia",
+        "blue": "Horatio",
+        "green": "Laertes",
+        "purple": "Polonius",
+        "pink": "Ghost",
+        "gray": "Rosencrantz / Guildenstern",
+        "none": "",
+        "yellow": "",
+        "lime": ""
+      },
+      "limbo": []
     },
     {
-      "id": 3,
-      "title": "Horatio tells Hamlet what he saw",
-      "notes": "Horatio finds HAMLET, still in mourning blacks two months after his father's death. Tells him about the ghost.\n\nHamlet's reaction: not fear. Hunger. He will go tonight.\n\nThis is our first look at Hamlet — brilliant, restless, already coiled.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 2
-    },
-    {
-      "id": 4,
-      "title": "The court celebrates Claudius's marriage",
-      "notes": "The new King CLAUDIUS presides over a glittering court. He has married GERTRUDE — Hamlet's mother, his dead brother's wife — within two months of the funeral.\n\nClaudius is charming, confident, politically shrewd. He is also a murderer, though no one knows it yet.\n\nHamlet stands apart. He cannot fake the celebration.",
-      "colors": [
-        "coral"
+      "id": "p1778028454723",
+      "name": "New Board",
+      "cards": [
+        {
+          "id": 42,
+          "title": "asfafs",
+          "notes": "",
+          "colors": [],
+          "fs": 14,
+          "size": "md",
+          "links": [],
+          "sn": 1
+        },
+        {
+          "id": 52,
+          "title": "asfafs",
+          "notes": "",
+          "colors": [],
+          "fs": 14,
+          "size": "md",
+          "links": [],
+          "sn": 2
+        },
+        {
+          "id": 43,
+          "title": "",
+          "notes": "",
+          "colors": [],
+          "fs": 14,
+          "size": "md",
+          "links": [],
+          "sn": 3
+        },
+        {
+          "id": 44,
+          "title": "",
+          "notes": "",
+          "colors": [],
+          "fs": 14,
+          "size": "md",
+          "links": [],
+          "sn": 4
+        },
+        {
+          "id": 45,
+          "title": "",
+          "notes": "",
+          "colors": [],
+          "fs": 14,
+          "size": "md",
+          "links": [],
+          "sn": 5
+        },
+        {
+          "id": 46,
+          "title": "",
+          "notes": "",
+          "colors": [],
+          "fs": 14,
+          "size": "md",
+          "links": [],
+          "sn": 6
+        },
+        {
+          "id": 47,
+          "title": "",
+          "notes": "",
+          "colors": [],
+          "fs": 14,
+          "size": "md",
+          "links": [],
+          "sn": 7
+        },
+        {
+          "id": 48,
+          "title": "",
+          "notes": "",
+          "colors": [],
+          "fs": 14,
+          "size": "md",
+          "links": [],
+          "sn": 8
+        },
+        {
+          "id": 49,
+          "title": "",
+          "notes": "",
+          "colors": [],
+          "fs": 14,
+          "size": "md",
+          "links": [],
+          "sn": 9
+        },
+        {
+          "id": 50,
+          "title": "",
+          "notes": "",
+          "colors": [],
+          "fs": 14,
+          "size": "md",
+          "links": [],
+          "sn": 10
+        },
+        {
+          "id": 51,
+          "title": "",
+          "notes": "",
+          "colors": [],
+          "fs": 14,
+          "size": "md",
+          "links": [],
+          "sn": 11
+        },
+        {
+          "id": 54,
+          "title": "",
+          "notes": "",
+          "colors": [],
+          "fs": 14,
+          "size": "md",
+          "links": [],
+          "sn": 12
+        },
+        {
+          "id": 53,
+          "title": "",
+          "notes": "",
+          "colors": [],
+          "fs": 14,
+          "size": "md",
+          "links": [],
+          "sn": 13
+        }
       ],
-      "fs": 14,
-      "nocount": false,
-      "sn": 3
-    },
-    {
-      "id": 5,
-      "title": "Hamlet's first soliloquy — 'Oh that this too solid flesh'",
-      "notes": "Hamlet alone. He wants to die but cannot. He is disgusted by his mother's remarriage, by the speed of it, by her apparent happiness.\n\n'Frailty, thy name is woman.'\n\nThis is the first time we're inside his head. Establish the gap between what he shows the world and what he actually feels. It's enormous.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 4
-    },
-    {
-      "id": 6,
-      "title": "Laertes warns Ophelia away from Hamlet",
-      "notes": "LAERTES, preparing to return to France, tells his sister OPHELIA to be careful of Hamlet. Princes don't marry where they love.\n\nTheir father POLONIUS adds his own warning — and his own rules. Ophelia is to have no more contact with Hamlet.\n\nOphelia agrees. She always agrees. That's the tragedy.",
-      "colors": [
-        "teal"
-      ],
-      "fs": 14,
-      "nocount": false,
-      "sn": 5
-    },
-    {
-      "id": 7,
-      "title": "The ghost speaks — 'I am thy father's spirit'",
-      "notes": "Hamlet follows the ghost to the cliff's edge. The ghost reveals the truth: Claudius poured poison in his ear while he slept. He was murdered.\n\n'If thou didst ever thy dear father love — revenge his foul and most unnatural murder.'\n\nThis is the inciting wound. Everything that follows comes from this moment. Play it huge.",
-      "colors": [
-        "pink"
-      ],
-      "fs": 14,
-      "nocount": false,
-      "sn": 6
-    },
-    {
-      "id": 8,
-      "title": "Hamlet swears Horatio and Marcellus to secrecy",
-      "notes": "Hamlet makes his companions swear on his sword never to reveal what they've seen. He tells them he may choose to 'put an antic disposition on' — to act mad.\n\nThis is Hamlet's first decision. He will not act immediately. He will think. He will test.\n\nThe ghost's voice from underground: 'Swear.'",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 7
-    },
-    {
-      "id": 9,
-      "title": "Hamlet adopts his 'antic disposition'",
-      "notes": "Hamlet begins performing madness — erratic behavior, strange speeches, alarming visits to Ophelia.\n\nEveryone interprets it differently. Polonius thinks it's lovesickness. Claudius suspects something darker.\n\nOnly Horatio knows the truth. The audience knows. This double awareness drives the rest of the play.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 8
-    },
-    {
-      "id": 10,
-      "title": "ACT TWO",
-      "notes": "",
-      "colors": [],
-      "fs": 36,
-      "nocount": true,
-      "sn": null,
-      "bgColor": "amber"
-    },
-    {
-      "id": 11,
-      "title": "Claudius and Polonius spy on Hamlet",
-      "notes": "Claudius enlists ROSENCRANTZ and GUILDENSTERN — Hamlet's old friends — to spy on him and report back. Hamlet sees through it immediately.\n\nHe is delighted and wounded at once. Even his friends are instruments of the state now.\n\n'Denmark's a prison.'",
-      "colors": [
-        "coral"
-      ],
-      "fs": 14,
-      "nocount": false,
-      "sn": 9
-    },
-    {
-      "id": 12,
-      "title": "The players arrive at Elsinore",
-      "notes": "A traveling theater company arrives at court. Hamlet is genuinely happy for the first time — he loves theater.\n\nHe asks them to perform The Murder of Gonzago, and requests they insert a speech he will write.\n\nThe trap is being set. This is Hamlet at his most alive.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 10
-    },
-    {
-      "id": 13,
-      "title": "Hamlet's plan — 'The play's the thing'",
-      "notes": "Hamlet's second soliloquy. He berates himself for inaction compared to the actor who wept for Hecuba.\n\n'What's Hecuba to him, or he to Hecuba, that he should weep for her?'\n\nHis plan: use the play to watch Claudius's reaction and confirm his guilt. If the King flinches, the ghost told the truth.\n\nHe still doesn't fully trust the ghost. That matters.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 11
-    },
-    {
-      "id": 14,
-      "title": "Ophelia reports Hamlet's strange visit",
-      "notes": "Ophelia tells her father that Hamlet came to her room — disheveled, silent, staring. He held her face and sighed deeply, then left without a word.\n\nPolonius takes this as evidence of love-madness and rushes to tell the King.\n\nBut Hamlet was saying goodbye. He knew she'd been used against him.",
-      "colors": [
-        "teal"
-      ],
-      "fs": 14,
-      "nocount": false,
-      "sn": 12
-    },
-    {
-      "id": 15,
-      "title": "'To be or not to be'",
-      "notes": "Hamlet alone — or so he thinks. Claudius and Polonius are hidden, watching.\n\nHamlet contemplates suicide, death, the unknown. The fear of what comes after is what keeps us living.\n\nOphelia enters. Hamlet is tender, then cruel — he knows she's being used. 'Get thee to a nunnery.'\n\nOphelia's grief is real. Claudius watches and does not believe this is madness.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 13
-    },
-    {
-      "id": 16,
-      "title": "Claudius decides Hamlet must be sent to England",
-      "notes": "After the nunnery scene, Claudius confides to Polonius: Hamlet's behavior is not love-madness. There's something else in it. He will send Hamlet to England.\n\nPolonius suggests one more chance — he will hide in Gertrude's room and listen to their conversation.\n\nThe net is tightening around Hamlet even as he tightens his own net around Claudius.",
-      "colors": [
-        "coral"
-      ],
-      "fs": 14,
-      "nocount": false,
-      "sn": 14
-    },
-    {
-      "id": 17,
-      "title": "Hamlet instructs the players",
-      "notes": "Hamlet gives the players their direction: speak naturally, don't overact, hold the mirror up to nature.\n\nThis speech is Shakespeare on theater. But in the story it shows us Hamlet the artist — precise, passionate, certain.\n\nHe is never more confident than when he is directing someone else's performance.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 15
-    },
-    {
-      "id": 18,
-      "title": "The Mousetrap — the play within the play",
-      "notes": "The court assembles. The play begins. Hamlet watches Claudius watching the poisoning scene.\n\nClaudius rises. Calls for lights. Leaves.\n\nHamlet has his confirmation. He is almost giddy. Horatio confirms he saw it too.\n\nBut now Hamlet must act. And he still won't — not yet.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 16
-    },
-    {
-      "id": 19,
-      "title": "ACT TWO B",
-      "notes": "",
-      "colors": [],
-      "fs": 35,
-      "nocount": true,
-      "sn": null,
-      "bgColor": "amber"
-    },
-    {
-      "id": 20,
-      "title": "Rosencrantz and Guildenstern report to Claudius",
-      "notes": "Claudius questions Rosencrantz and Guildenstern about Hamlet. They've learned nothing useful.\n\nClaudius decides: Hamlet leaves for England immediately, with letters commanding his execution.\n\nRosencrantz and Guildenstern don't know what the letters say. They are carrying a death warrant for their friend.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 17
-    },
-    {
-      "id": 21,
-      "title": "Hamlet finds Claudius praying — and waits",
-      "notes": "Hamlet comes upon Claudius alone, on his knees, trying to pray. This is the moment — he could kill him now.\n\nHe doesn't. If Claudius dies at prayer, his soul goes to heaven. Hamlet's father was killed without last rites, his soul in torment.\n\nSo Hamlet waits for a worse moment. This is his fatal hesitation — or his moral precision. The play won't decide for you.",
-      "colors": [
-        "coral"
-      ],
-      "fs": 14,
-      "nocount": false,
-      "sn": 18
-    },
-    {
-      "id": 22,
-      "title": "Claudius cannot pray",
-      "notes": "A short, devastating soliloquy. Claudius knows he is damned. He cannot repent because he is unwilling to give up what the murder bought him — the crown, the queen.\n\n'My words fly up, my thoughts remain below.'\n\nHamlet spared a man who wasn't even successfully praying. The irony is crushing.",
-      "colors": [
-        "coral"
-      ],
-      "fs": 14,
-      "nocount": false,
-      "sn": 19
-    },
-    {
-      "id": 23,
-      "title": "Hamlet confronts Gertrude — Polonius is killed",
-      "notes": "Hamlet goes to Gertrude's room. They argue fiercely — Hamlet is brutal about her remarriage.\n\nA noise behind the arras. Hamlet stabs through it, certain it's Claudius.\n\nIt's Polonius.\n\nThis is the turning point. Hamlet has now killed an innocent man. Everything accelerates from here.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 20
-    },
-    {
-      "id": 24,
-      "title": "The ghost appears again — only Hamlet can see it",
-      "notes": "The ghost appears in Gertrude's room. Hamlet speaks to it. Gertrude sees nothing — she believes he is mad.\n\nThe ghost tells Hamlet to comfort his mother and not forget his purpose.\n\nHamlet tries to convince Gertrude that he is not mad, just mad in a particular direction. She doesn't know what to believe.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 21
-    },
-    {
-      "id": 25,
-      "title": "Hamlet drags Polonius's body away",
-      "notes": "Hamlet shows no remorse about killing Polonius — only a grim acknowledgment that heaven used him as its instrument.\n\nHe hides the body and refuses to tell Claudius where it is.\n\n'The body is with the king, but the king is not with the body.'\n\nHamlet is now dangerous in a different way — not just threatening, but actually lethal.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 22
-    },
-    {
-      "id": 26,
-      "title": "ACT THREE",
-      "notes": "",
-      "colors": [],
-      "fs": 30,
-      "nocount": true,
-      "sn": null,
-      "bgColor": "amber"
-    },
-    {
-      "id": 27,
-      "title": "Ophelia's madness",
-      "notes": "Ophelia enters — truly mad now. Her father is dead, killed by the man she loved. Hamlet has been sent away.\n\nShe distributes flowers with strange, fractured meanings. She sings.\n\nThis is the scene that should break the audience. Everything the play has done to her arrives here.\n\nHer madness is real. His was performance. The difference matters enormously.",
-      "colors": [
-        "teal"
-      ],
-      "fs": 14,
-      "nocount": false,
-      "sn": 23
-    },
-    {
-      "id": 28,
-      "title": "Laertes returns — furious, demanding answers",
-      "notes": "Laertes bursts back from France with an angry crowd at his back. His father is dead, buried in secret, no state funeral.\n\nHe confronts Claudius directly. Claudius is unruffled — he knows how to handle this.\n\nHe will use Laertes's grief as a weapon against Hamlet.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 24
-    },
-    {
-      "id": 29,
-      "title": "Claudius turns Laertes against Hamlet",
-      "notes": "Claudius tells Laertes it was Hamlet who killed his father. Laertes's grief becomes a blade pointed in the right direction.\n\nClaudius is at his most dangerous here — manipulating a son's love for his father into a murder weapon.\n\nThe parallel to Hamlet is not subtle. Both sons. Both fathers murdered. Completely different responses.",
-      "colors": [
-        "coral"
-      ],
-      "fs": 14,
-      "nocount": false,
-      "sn": 25
-    },
-    {
-      "id": 30,
-      "title": "Ophelia drowns",
-      "notes": "Gertrude delivers the news. Ophelia fell from a willow tree into a brook and drowned — singing, as if she didn't know what was happening.\n\nThe speech is famous. Play it quiet.\n\nLaertes breaks. He had no more tears, and now he has all of them.",
-      "colors": [
-        "teal"
-      ],
-      "fs": 14,
-      "nocount": false,
-      "sn": 26
-    },
-    {
-      "id": 31,
-      "title": "Hamlet returns — letters intercepted, Rosencrantz and Guildenstern sent to their deaths",
-      "notes": "Hamlet has returned from the sea voyage. He discovered Claudius's letters and rewrote them — substituting Rosencrantz and Guildenstern's names for his own.\n\nHe feels no guilt about it. They chose the wrong side.\n\nHoratio is disturbed. Hamlet is more resolved than we've ever seen him — and more dangerous.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 27
-    },
-    {
-      "id": 32,
-      "title": "The gravediggers — Yorick's skull",
-      "notes": "Hamlet and Horatio come upon gravediggers preparing Ophelia's grave. Hamlet handles a skull — it's Yorick, the court jester he knew as a child.\n\n'Alas, poor Yorick. I knew him, Horatio.'\n\nDeath is made concrete and personal. All the abstraction of the soliloquies collapses into a skull in his hands.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 28
-    },
-    {
-      "id": 33,
-      "title": "Hamlet at Ophelia's graveside",
-      "notes": "The funeral procession arrives. Hamlet doesn't know it's Ophelia until Laertes leaps into the grave.\n\nHamlet leaps in after him. They grapple.\n\nThis is grief finally breaking through Hamlet's control. He did love her. He never said it when it mattered.",
-      "colors": [
-        "teal"
-      ],
-      "fs": 14,
-      "nocount": false,
-      "sn": 29
-    },
-    {
-      "id": 34,
-      "title": "Claudius and Laertes finalize the plot",
-      "notes": "Claudius and Laertes plan the fencing match. Laertes's foil will be unbated and poisoned. Claudius will also poison a cup of wine as backup.\n\nTwo fail-safes. Hamlet cannot survive this.\n\nHamlet accepts the match without suspicion — or perhaps with a kind of fatalistic acceptance.",
-      "colors": [
-        "coral"
-      ],
-      "fs": 14,
-      "nocount": false,
-      "sn": 30
-    },
-    {
-      "id": 35,
-      "title": "Hamlet tells Horatio he is ready",
-      "notes": "Before the match, Hamlet tells Horatio he doesn't feel well about it — but he is ready.\n\n'There is a special providence in the fall of a sparrow. If it be now, 'tis not to come; if it be not to come, it will be now.'\n\nHamlet has made peace with death. The readiness is all.\n\nThis is the resolution of everything — not action, but acceptance.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 31
-    },
-    {
-      "id": 36,
-      "title": "The fencing match begins",
-      "notes": "The court assembles for the match. Claudius has the poisoned cup ready. Laertes has the poisoned foil.\n\nHamlet and Laertes fence. Hamlet scores the first hit.\n\nClaudius offers the poisoned cup. Hamlet defers. Gertrude drinks it instead.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 32
-    },
-    {
-      "id": 37,
-      "title": "Gertrude drinks the poison",
-      "notes": "Gertrude drinks from Claudius's cup before he can stop her.\n\nClaudius knows what's happening but says nothing. He watches his wife drink poison rather than expose himself.\n\nThis moment defines him completely.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 33
-    },
-    {
-      "id": 38,
-      "title": "Laertes wounds Hamlet — they exchange foils",
-      "notes": "Laertes wounds Hamlet with the poisoned blade. In the scuffle, they exchange foils.\n\nHamlet wounds Laertes with his own poisoned sword.\n\nBoth men are now dying. The trap has caught its maker.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 34
-    },
-    {
-      "id": 39,
-      "title": "Gertrude dies — Laertes confesses",
-      "notes": "Gertrude collapses. Laertes, knowing he is dying, tells Hamlet the truth: the foil was poisoned, Claudius arranged everything.\n\nHamlet finally acts. He stabs Claudius and forces the poisoned wine into his mouth.\n\nClaudius dies. Four people have died in this room in minutes.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 35
-    },
-    {
-      "id": 40,
-      "title": "Hamlet dies — 'The rest is silence'",
-      "notes": "Hamlet is dying. He asks Horatio not to drink from the cup — someone must survive to tell the story.\n\nHe names Fortinbras as the next King of Denmark.\n\n'The rest is silence.'\n\nDon't rush it. Let it land.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 36
-    },
-    {
-      "id": 41,
-      "title": "Fortinbras arrives — takes the kingdom",
-      "notes": "Fortinbras enters with his army, having just won Poland. He finds a room full of the dead.\n\nHe orders a soldier's funeral for Hamlet — 'he was likely, had he been put on, to have proved most royal.'\n\nThe political world reasserts itself over the personal tragedy. Denmark has a new king. The cycle begins again.",
-      "colors": [],
-      "fs": 14,
-      "nocount": false,
-      "sn": 37
+      "legend": {},
+      "limbo": []
     }
   ],
-  "legend": {
-    "red": "Hamlet",
-    "coral": "Claudius",
-    "amber": "Gertrude",
-    "teal": "Ophelia",
-    "blue": "Horatio",
-    "green": "Laertes",
-    "purple": "Polonius",
-    "pink": "Ghost",
-    "gray": "Rosencrantz / Guildenstern",
-    "none": "",
-    "yellow": "",
-    "lime": ""
-  },
-  "nid": 42,
-  "savedAt": "2026-04-20T23:50:49.424Z"
+  "nid": 55,
+  "savedAt": "2026-05-06T00:48:14.541Z"
 }

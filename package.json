@@ -1,7 +1,7 @@
 {
   "name": "screenplay-cards",
   "productName": "Screenplay Cards",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "A digital index card tool for organizing screenplay beats and scenes.",
   "main": "main.js",
   "author": {
@@ -24,7 +24,7 @@
   "build": {
     "appId": "com.petercarrillo.screenplay-cards",
     "productName": "Screenplay Cards",
-    "copyright": "Copyright © 2026 Peter Carrillo",
+    "copyright": "Copyright \u00a9 2026 Peter Carrillo",
     "mac": {
       "category": "public.app-category.productivity",
       "icon": "assets/icon.icns",
@@ -32,11 +32,17 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         },
         {
           "target": "zip",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
       "darkModeSupport": true
@@ -69,7 +75,9 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "artifactName": "Screenplay-Cards-Setup-${version}-${arch}.${ext}"

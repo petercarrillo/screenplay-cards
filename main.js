@@ -8,6 +8,7 @@ let mainWindow = null;
 let recentFiles = [];
 let showWelcomePref = true;
 let windowBounds = null;
+const lastKnownMtime = {};  // filePath -> mtime at last open/save
 const userDataPath = app.getPath('userData');
 const prefsPath = path.join(userDataPath, 'prefs.json');
 
@@ -158,22 +159,21 @@ function openFile(filePath) {
       return;
     }
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    // Cloud sync check — warn if file on disk is newer than last known save
-    if (data.savedAt) {
-      const stat = fs.statSync(filePath);
-      const savedAt = new Date(data.savedAt).getTime();
-      if (stat.mtimeMs > savedAt + 10000) {
-        const result = dialog.showMessageBoxSync(mainWindow, {
-          type: 'warning',
-          title: 'File May Have Changed',
-          message: 'This file appears to have been modified outside the app.',
-          detail: `This can happen when a cloud sync service (iCloud, Dropbox, Google Drive) has updated the file from another device.\n\nLast saved: ${new Date(savedAt).toLocaleString()}\nFile on disk: ${new Date(stat.mtimeMs).toLocaleString()}\n\nOpen it anyway?`,
-          buttons: ['Open Anyway', 'Cancel'],
-          defaultId: 0,
-        });
-        if (result === 1) return;
-      }
+    // Cloud sync check — warn only if file changed since we last opened/saved it
+    const stat = fs.statSync(filePath);
+    const known = lastKnownMtime[filePath];
+    if (known && stat.mtimeMs > known + 2000) {
+      const result = dialog.showMessageBoxSync(mainWindow, {
+        type: 'warning',
+        title: 'File May Have Changed',
+        message: 'This file appears to have been modified outside the app.',
+        detail: `This can happen when a cloud sync service (iCloud, Dropbox, Google Drive) has updated the file from another device.\n\nOpen it anyway?`,
+        buttons: ['Open Anyway', 'Cancel'],
+        defaultId: 0,
+      });
+      if (result === 1) return;
     }
+    lastKnownMtime[filePath] = stat.mtimeMs;
     mainWindow.webContents.send('app:file-opened', { data, filePath });
     mainWindow.setRepresentedFilename(filePath);
     mainWindow.setTitle(data.name || path.basename(filePath, '.screenplaycards'));
@@ -197,6 +197,7 @@ function openFileDialog() {
 function saveFile(data, filePath) {
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+    lastKnownMtime[filePath] = fs.statSync(filePath).mtimeMs;
     mainWindow.setRepresentedFilename(filePath);
     mainWindow.setTitle(data.name || path.basename(filePath, '.screenplaycards'));
     mainWindow.setDocumentEdited(false);
@@ -258,7 +259,10 @@ ipcMain.handle('print:html', async (e, html) => {
     const pdfData = await printWin.webContents.printToPDF({
       printBackground: false,
       pageSize: 'Letter',
-      margins: { marginType: 'printableArea' },
+      displayHeaderFooter: true,
+      headerTemplate: '<span></span>',
+      footerTemplate: '<div style="font-size:10px;color:#888;width:100%;text-align:right;padding:0 1.5cm;font-family:-apple-system,sans-serif;box-sizing:border-box"><span class=\"pageNumber\"></span></div>',
+      margins: { marginType: 'custom', top: 1.5, bottom: 1.5, left: 1.5, right: 1.5 },
     });
     printWin.destroy();
     try { fs.unlinkSync(tmpHtml); } catch(e2) {}
