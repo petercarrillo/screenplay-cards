@@ -487,9 +487,8 @@ app.on('before-quit', () => { app.isQuitting = true; });
 
 app.whenReady().then(() => {
   buildMenu();
-  // Open last recent file if available, otherwise start blank
-  const lastFile = recentFiles.length > 0 ? recentFiles[0] : null;
-  createWindow(lastFile && require('fs').existsSync(lastFile) ? lastFile : null);
+  // Always start with no file — welcome panel shows recent files if showWelcome pref is true
+  createWindow(null);
   setupAutoUpdater();
 
   // Update check runs before welcome panel — renderer waits for app:ready signal

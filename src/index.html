@@ -400,26 +400,19 @@ const clearDO=()=>document.querySelectorAll('.cwrap,.lrow').forEach(e=>e.classLi
 
 async function doLoad(){
   if(window.electronAPI){
-    // Wait for app:ready signal from main (fires after update check resolves)
+    // Wait for app:ready signal (fires after update check resolves)
+    // This ensures update dialog shows before welcome panel
     await new Promise(resolve=>{
       let done=false;
       const cleanup=window.electronAPI.on('app:ready',()=>{if(!done){done=true;if(cleanup)cleanup();resolve();}});
-      // 6-second fallback in case signal never arrives
       setTimeout(()=>{if(!done){done=true;resolve();}},6000);
     });
-    // If a file was opened while we were waiting, don't interfere
-    if(currentFilePath)return;
-    // Brief pause to let any in-flight app:file-opened arrive before we act
-    await new Promise(r=>setTimeout(r,400));
-    if(currentFilePath)return;
     try{
       const d=await window.electronAPI.getWelcomeData();
       if(d.showWelcome&&!currentFilePath){showWelcomePanel();return;}
     }catch(e){}
-    if(!currentFilePath)startFreshProject();
-    return;
   }
-  startFreshProject();
+  if(!currentFilePath)startFreshProject();
 }
 
 function startFreshProject(){
