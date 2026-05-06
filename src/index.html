@@ -954,17 +954,17 @@ function renderTbar(){
       <button class="${view==='list'?'on':''}" id="lsb">list</button>
     </div>
     <button id="ub" style="opacity:${hasH?1:0.4};pointer-events:${hasH?'auto':'none'}">undo</button>
-    <button id="fitbtn">${fitMode?'exit fit':'fit all'}</button>
-    <button id="flowbtn" title="toggle card flow direction">${colFlow?'→ rows':'↓ cols'}</button>
+    <button id="fitbtn" style="${view==='list'?'display:none':''}">${fitMode?'exit fit':'fit all'}</button>
+    <button id="flowbtn" title="toggle card flow direction" style="${view==='list'?'display:none':''}">${colFlow?'→ rows':'↓ cols'}</button>
     <input type="range" id="zslider" min="40" max="150" value="${zoomLevel}" title="zoom" style="width:68px;cursor:pointer;accent-color:#888780;vertical-align:middle;-webkit-app-region:no-drag">
     <span id="zval" style="font-size:11px;color:#888780;min-width:32px;text-align:left;-webkit-app-region:no-drag">${zoomLevel}%</span>
     <button id="outbtn">outline</button>
     <button id="beatsbtn">beats</button>
-    <button id="selbtn" class="${selMode?'tbtn-on':''}">${selMode&&selectedCards.size?'select ('+selectedCards.size+')':"select"}</button>
-    <button id="prevbtn" class="${showPrev?'tbtn-on':''}" title="toggle notes preview on card fronts">preview</button>
+    <button id="selbtn" style="${view==='list'?'display:none':''}" class="${selMode?'tbtn-on':''}">${selMode&&selectedCards.size?'select ('+selectedCards.size+')':"select"}</button>
+    <button id="prevbtn" style="${view==='list'?'display:none':''}" class="${showPrev?'tbtn-on':''}" title="toggle notes preview on card fronts">preview</button>
     <button id="sumbtn">summary</button>
     <button id="limbobtn" class="${limboOpen?'tbtn-on':''}">limbo${(limboByB[curB]&&limboByB[curB].length)?` (${limboByB[curB].length})`:''}</button>
-    <button id="filtbtn" class="${(cpPanel==='border'&&cpId===null)||colorSpot.size>0?'tbtn-on':''}">filter</button>
+    <button id="filtbtn" style="${view==='list'?'display:none':''}" class="${(cpPanel==='border'&&cpId===null)||colorSpot.size>0?'tbtn-on':''}">filter</button>
     <span class="ctr"><span class="sdot" id="sdot"></span><span id="cnt">${countedScenes().length} scene${countedScenes().length===1?'':'s'}</span></span>
     <span style="color:#d3d1c7;margin:0 2px">|</span>
     <div id="actbar" style="display:flex;gap:4px;align-items:center;flex-wrap:nowrap"></div>
@@ -1481,18 +1481,7 @@ function printOutline(){
     body+='<div class="scene"><div class="scene-head"><span class="scene-num">'+num+'</span><span class="scene-title">'+titleHtml+'</span></div>'+notesHtml+'</div>';
   });
 
-  let legendHtml='';
-  const usedColorKeys=new Set(C().flatMap(c=>c.colors||[]));
-  const leg=legByB[curB]||{};
-  const legendColors=COLORS.filter(cl=>cl.h&&usedColorKeys.has(cl.k));
-  if(legendColors.length){
-    legendHtml+='<div class="leg-section"><div class="leg-title">Color Legend</div><div class="leg-grid">';
-    legendColors.forEach(cl=>{
-      const label=leg[cl.k]?esc(leg[cl.k]):cl.k;
-      legendHtml+=`<div class="leg-item"><span class="leg-dot" style="background:${cl.h}"></span><span class="leg-name">${label}</span></div>`;
-    });
-    legendHtml+='</div></div>';
-  }
+  const legendHtml='';
 
   const html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+esc(projTitle)+'</title>'
     +'<style>'
