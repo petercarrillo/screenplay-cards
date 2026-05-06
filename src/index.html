@@ -251,6 +251,7 @@ function buildSaveData(){
   return {
     version:'2.0',
     writer,
+    notes:projectNotes,
     curB,
     boards: boards.map(b=>({
       id:b.id,
@@ -258,7 +259,6 @@ function buildSaveData(){
       cards:byB[b.id]||[],
       legend:legByB[b.id]||{},
       limbo:limboByB[b.id]||[],
-      notes:notesByB[b.id]||[],
     })),
     nid,
     savedAt:new Date().toISOString(),
@@ -274,7 +274,7 @@ function loadFromData(data){
     byB={[projId]:data.cards||[]};
     legByB={[projId]:data.legend||{}};
     limboByB={[projId]:data.limbo||[]};
-    notesByB={[projId]:data.notes||[]};
+    projectNotes=data.notes||[];
     nid=data.nid||((data.cards||[]).length+1);
     writer=data.writer||'';
   } else {
@@ -286,7 +286,6 @@ function loadFromData(data){
       byB[b.id]=b.cards||[];
       legByB[b.id]=b.legend||{};
       limboByB[b.id]=b.limbo||[];
-      notesByB[b.id]=b.notes||[];
     });
     nid=data.nid||1;
     writer=data.writer||'';
@@ -370,7 +369,7 @@ let dsrc=null;
 let stmr=null;
 let zoomLevel=100;
 let limboByB={};
-let notesByB={};
+let projectNotes=[];
 let writer='';
 let lastSavedAt=null;
 let limboOpen=false;
@@ -448,7 +447,7 @@ async function doLoad(){
 function startFreshProject(){
   currentFilePath=null;
   boards=[{id:'p1',name:'Board 1'}];
-  curB='p1';byB={'p1':[]};nid=1;legByB={};limboByB={'p1':[]};notesByB={'p1':[]};writer='';
+  curB='p1';byB={'p1':[]};nid=1;legByB={};limboByB={'p1':[]};projectNotes=[];writer='';
   hist=[];actFilter.clear();colorSpot.clear();cpPanel=null;cpId=null;collapsedActs.clear();selectedCards.clear();selMode=false;linkHighlight=null;
   C().push({id:nid++,title:'Opening image',notes:'',colors:[],fs:14,size:'md',links:[]},
            {id:nid++,title:'Inciting incident',notes:'',colors:[],fs:14,size:'md',links:[]},
@@ -539,7 +538,7 @@ function redo(){
   }
 }
 
-function switchB(id){curB=id;hist=hist.filter(h=>h.board===id);pend=null;cpPanel=null;cpId=null;flipped=false;actFilter.clear();colorSpot.clear();collapsedActs.clear();selectedCards.clear();selMode=false;linkHighlight=null;if(!limboByB[id])limboByB[id]=[];if(!notesByB[id])notesByB[id]=[];if(!byB[curB])byB[curB]=[];if(!legByB[curB])legByB[curB]={};sched();render();}
+function switchB(id){curB=id;hist=hist.filter(h=>h.board===id);pend=null;cpPanel=null;cpId=null;flipped=false;actFilter.clear();colorSpot.clear();collapsedActs.clear();selectedCards.clear();selMode=false;linkHighlight=null;if(!limboByB[id])limboByB[id]=[];if(!byB[curB])byB[curB]=[];if(!legByB[curB])legByB[curB]={};sched();render();}
 
 function addB(){
   // If only one empty board exists, just add blank directly
@@ -568,7 +567,6 @@ function doDuplicateBoard(sourceId){
   byB[id]=JSON.parse(JSON.stringify(byB[sourceId]||[]));
   legByB[id]=JSON.parse(JSON.stringify(legByB[sourceId]||{}));
   limboByB[id]=JSON.parse(JSON.stringify(limboByB[sourceId]||[]));
-  notesByB[id]=JSON.parse(JSON.stringify(notesByB[sourceId]||[]));
   curB=id;hist=[];pend=null;cpId=null;pendBoard=false;sched();render();
   setTimeout(()=>{
     const tabs=document.querySelectorAll('.ptab-name');
@@ -700,14 +698,6 @@ function doMoveTo(targetBoardId,dest){
     if(dest==='limbo'){if(!limboByB[targetBoardId])limboByB[targetBoardId]=[];limboByB[targetBoardId].push(card);}
     else{if(!byB[targetBoardId])byB[targetBoardId]=[];byB[targetBoardId].push(card);}
     sched();renderLimbo();renderTbar();renderSW();
-  } else if(source==='notes'){
-    const nb=notesByB[curB]||[];
-    const idx=nb.findIndex(n=>n.id===cardId);
-    if(idx===-1){renderSW();return;}
-    const[note]=nb.splice(idx,1);
-    if(!notesByB[targetBoardId])notesByB[targetBoardId]=[];
-    notesByB[targetBoardId].push(note);
-    sched();renderNotes();renderSW();
   }
 }
 
@@ -742,9 +732,8 @@ function startNotesResize(e){
   document.addEventListener('mouseup',onUp);
 }
 function addNote(){
-  if(!notesByB[curB])notesByB[curB]=[];
   const note={id:nid++,title:'',notes:''};
-  notesByB[curB].push(note);
+  projectNotes.push(note);
   sched();renderNotes();renderTbar();
   setTimeout(()=>{
     const els=document.querySelectorAll('#np-board [data-field="title"]');
@@ -753,16 +742,15 @@ function addNote(){
   },50);
 }
 function deleteNote(noteId){
-  const nb=notesByB[curB]||[];
-  const idx=nb.findIndex(n=>n.id===noteId);
-  if(idx!==-1)nb.splice(idx,1);
+  const idx=projectNotes.findIndex(n=>n.id===noteId);
+  if(idx!==-1)projectNotes.splice(idx,1);
   sched();renderNotes();renderTbar();
 }
 function printNotes(){
   const projTitle=currentFilePath?currentFilePath.split('/').pop().replace(/\.screenplaycards$/i,''):'Untitled';
   const board=boards.find(x=>x.id===curB);
   const boardName=board?board.name:'';
-  const notes=notesByB[curB]||[];
+  const notes=projectNotes;
   let body='';
   notes.forEach(n=>{
     const titleHtml=esc((n.title||'').trim())||'<em style="color:#b4b2a9">untitled</em>';
@@ -797,7 +785,7 @@ function printNotes(){
 function renderNotes(){
   const p=document.getElementById('notes-panel');if(!p)return;
   if(!notesOpen){p.innerHTML='';return;}
-  const notes=notesByB[curB]||[];
+  const notes=projectNotes;
   p.innerHTML='';
   // Resize handle on right edge
   const rh=document.createElement('div');rh.className='np-resize';
@@ -827,12 +815,7 @@ function renderNotes(){
       // Meta bar
       const meta=document.createElement('div');meta.className='np-note-meta';
       const spacer=document.createElement('span');spacer.style.flex='1';meta.appendChild(spacer);
-      if(boards.length>1){
-        const mvb=document.createElement('button');mvb.style.cssText='font-size:10px;padding:1px 5px';
-        mvb.textContent='move';mvb.title='move to another board\'s Notes';
-        mvb.addEventListener('click',e=>{e.stopPropagation();openMovePicker(n.id,'notes');});
-        meta.appendChild(mvb);
-      }
+
       const xb=document.createElement('button');xb.style.cssText='font-size:10px;padding:1px 5px';
       xb.textContent='✕';xb.addEventListener('click',e=>{e.stopPropagation();deleteNote(n.id);});
       meta.appendChild(xb);
@@ -871,7 +854,7 @@ function renderNotes(){
   p.appendChild(rh);
 }
 function findNote(id){
-  return (notesByB[curB]||[]).find(n=>n.id===id)||null;
+  return projectNotes.find(n=>n.id===id)||null;
 }
 
 function toggleLimbo(){
@@ -1350,7 +1333,7 @@ function renderTbar(){
   const t=document.getElementById('tbar');
   const hasH=hist.some(h=>h.board===curB);
   t.innerHTML=`
-    <button id="notesbtn" class="tbtn-panel${notesOpen?' tbtn-on':''}">notes${(notesByB[curB]&&notesByB[curB].length)?` (${notesByB[curB].length})`:''}</button>
+    <button id="notesbtn" class="tbtn-panel${notesOpen?' tbtn-on':''}">notes${projectNotes.length?` (${projectNotes.length})`:''}</button>
     <div class="tbar-sep"></div>
     <button id="ab">+ card</button>
     <button id="fb"${view==='list'?' style="display:none"':''}>flip all</button>
@@ -1754,8 +1737,21 @@ function makeLimboCrd(c,i){
   });
   w.addEventListener('dragend',()=>{
     dsrcLimbo=null;
-    document.querySelectorAll('.cwrap').forEach(e=>e.classList.remove('dragging'));
+    document.querySelectorAll('.cwrap,.lrow').forEach(e=>e.classList.remove('dragging','drag-over'));
     clearDO();
+  });
+  w.addEventListener('dragover',e=>{
+    if(dsrcLimbo&&dsrcLimbo!==c.id){e.preventDefault();e.stopPropagation();w.classList.add('drag-over');}
+  });
+  w.addEventListener('dragleave',()=>w.classList.remove('drag-over'));
+  w.addEventListener('drop',e=>{
+    e.preventDefault();e.stopPropagation();w.classList.remove('drag-over');
+    if(!dsrcLimbo||dsrcLimbo===c.id)return;
+    const lb=limboByB[curB]||[];
+    const fi=lb.findIndex(x=>x.id===dsrcLimbo),ti=lb.findIndex(x=>x.id===c.id);
+    if(fi===-1||ti===-1)return;
+    const[moved]=lb.splice(fi,1);lb.splice(ti,0,moved);
+    dsrcLimbo=null;sched();renderLimbo();
   });
   const colors=c.colors||(c.color&&c.color!=='none'?[c.color]:[]);
   const bgHex=cHex(c.bgColor);const tc=textColor(bgHex);
@@ -1828,7 +1824,20 @@ function makeLimboLRow(c,i){
     dsrcLimbo=c.id;dsrc=null;this.classList.add('dragging');e.dataTransfer.effectAllowed='move';
   });
   row.addEventListener('dragend',()=>{
-    dsrcLimbo=null;document.querySelectorAll('.lrow').forEach(e=>e.classList.remove('dragging'));clearDO();
+    dsrcLimbo=null;document.querySelectorAll('.cwrap,.lrow').forEach(e=>e.classList.remove('dragging','drag-over'));clearDO();
+  });
+  row.addEventListener('dragover',e=>{
+    if(dsrcLimbo&&dsrcLimbo!==c.id){e.preventDefault();e.stopPropagation();row.classList.add('drag-over');}
+  });
+  row.addEventListener('dragleave',()=>row.classList.remove('drag-over'));
+  row.addEventListener('drop',e=>{
+    e.preventDefault();e.stopPropagation();row.classList.remove('drag-over');
+    if(!dsrcLimbo||dsrcLimbo===c.id)return;
+    const lb=limboByB[curB]||[];
+    const fi=lb.findIndex(x=>x.id===dsrcLimbo),ti=lb.findIndex(x=>x.id===c.id);
+    if(fi===-1||ti===-1)return;
+    const[moved]=lb.splice(fi,1);lb.splice(ti,0,moved);
+    dsrcLimbo=null;sched();renderLimbo();
   });
   const colors=c.colors||(c.color&&c.color!=='none'?[c.color]:[]);
   const bgHex=cHex(c.bgColor);const tc=textColor(bgHex);
