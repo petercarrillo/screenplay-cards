@@ -10,7 +10,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f4f0;color:#1a1a18;height:100vh;overflow:hidden;display:flex;flex-direction:column;padding:0 1.5rem}
 .pbar{display:flex;flex-direction:column;gap:0;margin-bottom:12px;flex-shrink:0}
-.proj-row{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;margin-bottom:8px;border-bottom:0.5px solid #d3d1c7;gap:12px;min-height:28px;flex-wrap:wrap}
+.proj-row{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;padding-left:56px;margin-bottom:8px;border-bottom:0.5px solid #d3d1c7;gap:12px;min-height:28px;flex-wrap:wrap}
 .proj-name{font-size:13px;font-weight:600;color:#1a1a18;letter-spacing:-0.01em;white-space:nowrap}
 .proj-name.unsaved{color:#888780;font-style:italic}
 .proj-center{display:flex;flex-direction:column;align-items:flex-start;flex-shrink:0}
@@ -138,10 +138,8 @@ button:hover{background:#f1efe8}
   #limbo-panel{border-left-color:#444441}
   .lp-hdr{border-bottom-color:#444441}
   .lp-count{background:#3a3a38;color:#888780}
-  .lp-item{background:#2c2c2a;border-color:#444441}
-  .lp-name{color:#e8e6e0}
-  .lp-restore{border-color:#444441}
-  .lp-restore:hover{background:#3a3a38;color:#e8e6e0}
+  .lp-empty{color:#5f5e5a}
+  .lp-resize:hover,.lp-resize.active{background:rgba(55,138,221,0.18)}
   #welcome-panel{background:#242422;border-color:#444441}
   .wp-logo{color:#e8e6e0}
   .wp-sub{color:#888780}
@@ -181,21 +179,24 @@ button:hover{background:#f1efe8}
 .szbtn:hover{background:#e8e6e0;color:#1a1a18}
 
 body{padding-top:0}
-.pbar{padding-top:1.5rem;-webkit-app-region:drag}
+.pbar{padding-top:2.25rem;-webkit-app-region:drag}
   #workspace{flex:1;display:flex;overflow:hidden;min-height:0}
   #board{flex:1;overflow-y:auto;padding:1rem 0 4rem}
-  #limbo-panel{width:0;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;transition:width 0.2s ease;border-left:0 solid #d3d1c7}
-  #limbo-panel.open{width:232px;border-left-width:1px;padding:0 0 4rem 12px}
-  .lp-hdr{display:flex;align-items:center;gap:6px;padding:1rem 0 8px;flex-shrink:0;border-bottom:1px solid #e8e6e0;margin-bottom:8px}
+  #limbo-panel{width:0;flex-shrink:0;display:flex;flex-direction:row;overflow:hidden;border-left:0 solid #d3d1c7;position:relative}
+  #limbo-panel.open{border-left-width:1px}
+  #limbo-panel.lp-anim{transition:width 0.2s ease}
+  .lp-resize{width:6px;flex-shrink:0;cursor:col-resize;background:transparent;z-index:10}
+  .lp-resize:hover,.lp-resize.active{background:rgba(55,138,221,0.25)}
+  .lp-inner{flex:1;display:flex;flex-direction:column;overflow:hidden;padding:0 0 4rem 8px;min-width:0}
+  .lp-board{flex:1;overflow-y:auto;overflow-x:hidden;position:relative}
+  .lp-drag-hi{outline:2px dashed #378add;outline-offset:-2px;background:rgba(55,138,221,0.04)}
+  .lp-hdr{display:flex;align-items:center;gap:6px;padding:1rem 0 8px;flex-shrink:0;border-bottom:1px solid #e8e6e0;margin-bottom:8px;flex-wrap:wrap}
   .lp-title{font-size:11px;font-weight:600;color:#888780;flex:1;letter-spacing:0.08em;text-transform:uppercase}
   .lp-count{font-size:11px;color:#b4b2a9;background:#e8e6e0;border-radius:10px;padding:1px 6px;flex-shrink:0}
-  .lp-body{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:5px}
-  .lp-empty{font-size:12px;color:#b4b2a9;font-style:italic;padding:6px 0}
-  .lp-item{display:flex;align-items:center;gap:6px;padding:6px 8px;background:#fff;border:0.5px solid #d3d1c7;border-radius:8px;min-width:0}
-  .lp-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;border:1px solid #d3d1c7}
-  .lp-name{font-size:11px;color:#1a1a18;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-weight:500}
-  .lp-restore{font-size:11px;padding:2px 5px;flex-shrink:0;color:#888780;background:transparent;border-color:#d3d1c7}
-  .lp-restore:hover{color:#1a1a18;background:#f1efe8}
+  .lp-empty{font-size:12px;color:#b4b2a9;font-style:italic;padding:12px 8px}
+  .lp-board .cgrid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+  .lp-board .cwrap{cursor:default}
+  .lp-board .cwrap[draggable="true"]{cursor:grab}
   .note-prev{font-size:10px;color:#b4b2a9;line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;flex-shrink:0;margin-top:3px;padding:0 2px;font-weight:400;max-height:28px}
   .act-arrow{font-size:9px;color:#b4b2a9;cursor:pointer;padding:0 3px;transition:transform 0.15s;display:inline-block;line-height:1;-webkit-app-region:no-drag;user-select:none;flex-shrink:0}
   .act-arrow.collapsed{transform:rotate(-90deg)}
@@ -352,6 +353,11 @@ let showPrev=false;
 let selectedCards=new Set();
 let selMode=false;
 let linkHighlight=null;
+let limboView='grid';
+let limboFlipped=false;
+let limboFitMode=false;
+let limboWidth=360;
+let dsrcLimbo=null;
 
 let currentFilePath=null;
 let isDirty=false;
@@ -397,16 +403,11 @@ const makeColorBar=colors=>{
 const migrateColors=c=>{if(!c.colors)c.colors=(c.color&&c.color!=='none')?[c.color]:[];};
 const flash=()=>{const d=document.getElementById('sdot');if(d){d.classList.add('on');setTimeout(()=>d.classList.remove('on'),1200);}};
 const clearDO=()=>document.querySelectorAll('.cwrap,.lrow').forEach(e=>e.classList.remove('drag-over'));
+const findCardAnywhere=id=>(C().find(x=>x.id===id))||((limboByB[curB]||[]).find(x=>x.id===id));
+const isLimboCard=id=>!!(limboByB[curB]||[]).find(x=>x.id===id);
 
 async function doLoad(){
   if(window.electronAPI){
-    // Wait for app:ready signal (fires after update check resolves)
-    // This ensures update dialog shows before welcome panel
-    await new Promise(resolve=>{
-      let done=false;
-      const cleanup=window.electronAPI.on('app:ready',()=>{if(!done){done=true;if(cleanup)cleanup();resolve();}});
-      setTimeout(()=>{if(!done){done=true;resolve();}},6000);
-    });
     try{
       const d=await window.electronAPI.getWelcomeData();
       if(d.showWelcome&&!currentFilePath){showWelcomePanel();return;}
@@ -443,7 +444,11 @@ function sched(){
   },1500);
 }
 
-function pushH(){hist.push({board:curB,snap:JSON.stringify(C())});if(hist.length>30)hist.shift();redoHist=[];}
+function pushH(){
+  hist.push({board:curB,snap:JSON.stringify(C()),limboSnap:JSON.stringify(limboByB[curB]||[])});
+  if(hist.length>30)hist.shift();
+  redoHist=[];
+}
 
 function pushCH(id){
   const c=C().find(x=>x.id===id);if(!c)return;
@@ -472,8 +477,10 @@ function undo(){
   }
   for(let i=hist.length-1;i>=0;i--){
     if(hist[i].board===curB){
-      redoHist.push({board:curB,snap:JSON.stringify(C())});
-      byB[curB]=JSON.parse(hist[i].snap);hist.splice(i,1);sched();pend=null;cpId=null;render();return;
+      redoHist.push({board:curB,snap:JSON.stringify(C()),limboSnap:JSON.stringify(limboByB[curB]||[])});
+      byB[curB]=JSON.parse(hist[i].snap);
+      if(hist[i].limboSnap!==undefined)limboByB[curB]=JSON.parse(hist[i].limboSnap);
+      hist.splice(i,1);sched();pend=null;cpId=null;render();return;
     }
   }
 }
@@ -495,9 +502,11 @@ function redo(){
   }
   if(!redoHist.length)return;
   const last=redoHist.pop();
-  if(last.proj===curB){
-    hist.push({board:curB,snap:JSON.stringify(C())});
-    byB[curB]=JSON.parse(last.snap);sched();pend=null;cpId=null;render();
+  if(last.board===curB){
+    hist.push({board:curB,snap:JSON.stringify(C()),limboSnap:JSON.stringify(limboByB[curB]||[])});
+    byB[curB]=JSON.parse(last.snap);
+    if(last.limboSnap!==undefined)limboByB[curB]=JSON.parse(last.limboSnap);
+    sched();pend=null;cpId=null;render();
   }
 }
 
@@ -579,8 +588,17 @@ function duplicateCard(cardId){
 function moveToLimbo(cardId){
   const idx=C().findIndex(c=>c.id===cardId);
   if(idx===-1)return;
+  // Capture origin before removing the card
+  let originAct=null;
+  C().forEach(c=>{if(isActHeader(c))originAct=(c.title||'');});
+  let actBeforeCard=null;
+  for(let i=idx;i>=0;i--){if(isActHeader(C()[i])){actBeforeCard=(C()[i].title||'');break;}}
   pushH();
   const [card]=C().splice(idx,1);
+  card._originSn=card.sn;
+  card._originAct=actBeforeCard;
+  card._originPrev=idx>0?C()[idx-1]&&C()[idx-1].id:null;
+  card._originNext=idx<C().length?C()[idx]&&C()[idx].id:null;
   if(!limboByB[curB])limboByB[curB]=[];
   limboByB[curB].push(card);
   pend=null;sched();renderBoard();renderTbar();renderLimbo();
@@ -592,15 +610,73 @@ function restoreFromLimbo(cardId){
   if(idx===-1)return;
   pushH();
   const [card]=lb.splice(idx,1);
-  C().push(card);
+  // Try to place near original neighbors; fall back to end of board
+  let placed=false;
+  if(card._originPrev!=null){
+    const pi=C().findIndex(c=>c.id===card._originPrev);
+    if(pi!==-1){C().splice(pi+1,0,card);placed=true;}
+  }
+  if(!placed&&card._originNext!=null){
+    const ni=C().findIndex(c=>c.id===card._originNext);
+    if(ni!==-1){C().splice(ni,0,card);placed=true;}
+  }
+  if(!placed)C().push(card);
+  // Clear origin metadata now that card is back on the board
+  delete card._originSn;delete card._originAct;
+  delete card._originPrev;delete card._originNext;
   sched();renderBoard();renderTbar();renderLimbo();
 }
 
 function toggleLimbo(){
   limboOpen=!limboOpen;
   const p=document.getElementById('limbo-panel');
-  if(p)p.classList.toggle('open',limboOpen);
+  if(p){
+    p.classList.add('lp-anim');
+    p.classList.toggle('open',limboOpen);
+    p.style.width=limboOpen?limboWidth+'px':'0';
+    setTimeout(()=>p.classList.remove('lp-anim'),250);
+  }
   renderLimbo();renderTbar();
+}
+function startLimboResize(e){
+  e.preventDefault();
+  const p=document.getElementById('limbo-panel');if(!p)return;
+  p.style.transition='none';
+  const rh=document.querySelector('.lp-resize');if(rh)rh.classList.add('active');
+  const startX=e.clientX,startW=limboWidth;
+  function onMove(ev){
+    const delta=startX-ev.clientX;
+    limboWidth=Math.max(260,Math.min(Math.round(window.innerWidth*0.6),startW+delta));
+    p.style.width=limboWidth+'px';
+    if(limboFitMode)applyLimboFit();
+  }
+  function onUp(){
+    document.removeEventListener('mousemove',onMove);
+    document.removeEventListener('mouseup',onUp);
+    if(rh)rh.classList.remove('active');
+  }
+  document.addEventListener('mousemove',onMove);
+  document.addEventListener('mouseup',onUp);
+}
+function applyLimboFit(){
+  const lb=document.getElementById('lp-board');if(!lb)return;
+  const cards=limboByB[curB]||[];
+  const grid=lb.querySelector('.cgrid');
+  if(!cards.length||limboView==='list'){if(grid){grid.style.gridTemplateColumns='';grid.style.zoom='';}return;}
+  if(!grid)return;
+  const panelW=lb.clientWidth||limboWidth-16;
+  const lbH=lb.clientHeight||400;
+  const n=cards.length;const cardW=212;const cardH=172;
+  let bestZoom=0,bestCols=1;
+  for(let cols=1;cols<=n;cols++){
+    const rows=Math.ceil(n/cols);
+    const zw=panelW/(cols*cardW);
+    const zh=lbH/(rows*cardH);
+    const z=Math.min(zw,zh,1);
+    if(z>bestZoom){bestZoom=z;bestCols=cols;}
+  }
+  grid.style.gridTemplateColumns=`repeat(${bestCols},1fr)`;
+  grid.style.zoom=bestZoom;
 }
 
 function renderLimbo(){
@@ -608,29 +684,77 @@ function renderLimbo(){
   if(!limboOpen){p.innerHTML='';return;}
   const cards=limboByB[curB]||[];
   p.innerHTML='';
+  // Resize handle
+  const rh=document.createElement('div');rh.className='lp-resize';
+  rh.addEventListener('mousedown',e=>startLimboResize(e));
+  p.appendChild(rh);
+  // Inner container
+  const inner=document.createElement('div');inner.className='lp-inner';
+  // Header
   const hdr=document.createElement('div');hdr.className='lp-hdr';
   const ttl=document.createElement('span');ttl.className='lp-title';ttl.textContent='Limbo';hdr.appendChild(ttl);
   const cnt=document.createElement('span');cnt.className='lp-count';cnt.textContent=cards.length;hdr.appendChild(cnt);
-  const cls=document.createElement('button');cls.className='lp-restore';cls.textContent='close';cls.style.cssText='font-size:11px;padding:2px 7px';
-  cls.addEventListener('click',toggleLimbo);hdr.appendChild(cls);
-  p.appendChild(hdr);
-  const body=document.createElement('div');body.className='lp-body';
-  if(!cards.length){
-    const em=document.createElement('div');em.className='lp-empty';em.textContent='No cards in limbo';body.appendChild(em);
-  } else {
-    cards.forEach(c=>{
-      const item=document.createElement('div');item.className='lp-item';
-      const dot=document.createElement('span');dot.className='lp-dot';
-      const hex=c.colors&&c.colors.length?cHex(c.colors[0]):null;
-      if(hex){dot.style.background=hex;dot.style.borderColor=hex;}
-      item.appendChild(dot);
-      const nm=document.createElement('span');nm.className='lp-name';nm.textContent=c.title||'untitled';item.appendChild(nm);
-      const rb=document.createElement('button');rb.className='lp-restore';rb.title='restore to board';rb.textContent='↩';
-      rb.addEventListener('click',()=>restoreFromLimbo(c.id));item.appendChild(rb);
-      body.appendChild(item);
+  // View toggle
+  const vt=document.createElement('div');vt.className='vtog';vt.style.cssText='flex-shrink:0';
+  ['grid','list'].forEach(v=>{
+    const b=document.createElement('button');b.textContent=v;
+    b.style.cssText='font-size:10px;padding:2px 7px';
+    if(limboView===v)b.classList.add('on');
+    b.addEventListener('click',()=>{if(limboView!==v){limboView=v;limboFitMode=false;renderLimbo();}});
+    vt.appendChild(b);
+  });
+  hdr.appendChild(vt);
+  // Flip all
+  const fb=document.createElement('button');fb.style.cssText='font-size:10px;padding:2px 7px;flex-shrink:0';
+  fb.textContent=limboFlipped?'↺ front':'↺ flip';
+  fb.addEventListener('click',()=>{
+    limboFlipped=!limboFlipped;
+    document.querySelectorAll('#lp-board .cwrap').forEach(el=>el.classList.toggle('flipped',limboFlipped));
+    fb.textContent=limboFlipped?'↺ front':'↺ flip';
+  });
+  hdr.appendChild(fb);
+  // Fit all (grid only)
+  if(limboView==='grid'&&cards.length){
+    const fitb=document.createElement('button');fitb.style.cssText='font-size:10px;padding:2px 7px;flex-shrink:0';
+    fitb.textContent=limboFitMode?'exit fit':'fit';
+    fitb.addEventListener('click',()=>{
+      limboFitMode=!limboFitMode;
+      if(!limboFitMode){const lb=document.getElementById('lp-board');const g=lb&&lb.querySelector('.cgrid');if(g){g.style.zoom='';g.style.gridTemplateColumns='';}}
+      else{setTimeout(applyLimboFit,0);}
+      fitb.textContent=limboFitMode?'exit fit':'fit';
     });
+    hdr.appendChild(fitb);
   }
-  p.appendChild(body);
+  // Print (only when there are cards)
+  if(cards.length){
+    const pb=document.createElement('button');pb.style.cssText='font-size:10px;padding:2px 7px;flex-shrink:0';
+    pb.textContent='print';pb.title='Print Limbo SideBoard outline';
+    pb.addEventListener('click',printLimbo);hdr.appendChild(pb);
+  }
+  // Close
+  const cls=document.createElement('button');cls.style.cssText='font-size:10px;padding:2px 7px;margin-left:auto;flex-shrink:0';cls.textContent='✕';
+  cls.addEventListener('click',toggleLimbo);hdr.appendChild(cls);
+  inner.appendChild(hdr);
+  // Card board area
+  const lb=document.createElement('div');lb.id='lp-board';lb.className='lp-board';
+  // Accept drops from main board
+  lb.addEventListener('dragover',e=>{if(dsrc&&!dsrcLimbo){e.preventDefault();lb.classList.add('lp-drag-hi');}});
+  lb.addEventListener('dragleave',e=>{if(!lb.contains(e.relatedTarget))lb.classList.remove('lp-drag-hi');});
+  lb.addEventListener('drop',e=>{
+    e.preventDefault();lb.classList.remove('lp-drag-hi');
+    if(dsrc&&!dsrcLimbo&&dsrc.dataset.cid){moveToLimbo(parseInt(dsrc.dataset.cid));dsrc=null;}
+  });
+  if(!cards.length){
+    const em=document.createElement('div');em.className='lp-empty';em.textContent='Drag cards here or use select mode';lb.appendChild(em);
+  } else {
+    const grid=document.createElement('div');
+    grid.className=limboView==='list'?'clist':'cgrid';
+    cards.forEach((c,i)=>grid.appendChild(limboView==='list'?makeLimboLRow(c,i):makeLimboCrd(c,i)));
+    lb.appendChild(grid);
+    if(limboFitMode&&limboView==='grid')setTimeout(applyLimboFit,0);
+  }
+  inner.appendChild(lb);
+  p.appendChild(inner);
 }
 
 function toggleActCollapse(cardId){
@@ -760,7 +884,19 @@ function limboBulkSelected(){
   pushH();
   if(!limboByB[curB])limboByB[curB]=[];
   const keep=[],moved=[];
-  (byB[curB]||[]).forEach(c=>{if(selectedCards.has(c.id))moved.push(c);else keep.push(c);});
+  let actTrack=null;
+  (byB[curB]||[]).forEach((c,idx)=>{
+    if(isActHeader(c))actTrack=(c.title||'');
+    if(selectedCards.has(c.id)){
+      c._originSn=c.sn;
+      c._originAct=actTrack;
+      c._originPrev=idx>0?(byB[curB][idx-1]&&byB[curB][idx-1].id):null;
+      c._originNext=idx<(byB[curB].length-1)?(byB[curB][idx+1]&&byB[curB][idx+1].id):null;
+      moved.push(c);
+    } else {
+      keep.push(c);
+    }
+  });
   byB[curB]=keep;
   limboByB[curB]=limboByB[curB].concat(moved);
   selectedCards.clear();selMode=false;sched();renderBoard();renderTbar();renderLimbo();renderSW();
@@ -816,9 +952,22 @@ function reqDel(cardId){
   pend={type:'card',cardId,label:c?c.title||'untitled':'untitled'};
   cpId=null;renderSW();
 }
+function reqDelLimbo(cardId){
+  const lb=limboByB[curB]||[];
+  const c=lb.find(x=>x.id===cardId);
+  pend={type:'limbo-card',cardId,label:c?c.title||'untitled':'untitled'};
+  cpId=null;renderSW();
+}
 
 function doDel(){
-  if(!pend||pend.type!=='card')return;
+  if(!pend)return;
+  if(pend.type==='limbo-card'){
+    const lb=limboByB[curB]||[];
+    const i=lb.findIndex(c=>c.id===pend.cardId);
+    if(i!==-1)lb.splice(i,1);
+    pend=null;sched();renderLimbo();renderTbar();renderSW();return;
+  }
+  if(pend.type!=='card')return;
   const i=C().findIndex(c=>c.id===pend.cardId);
   if(i===-1){pend=null;renderSW();return;}
   pushH();C().splice(i,1);pend=null;sched();renderBoard();renderTbar();renderSW();
@@ -830,21 +979,25 @@ function openCP(cardId,mode){
   cpPanel=m;cpId=cardId;pend=null;renderSW();
 }
 function toggleColor(cardId,k){
-  const c=C().find(x=>x.id===cardId);if(!c)return;
+  const c=findCardAnywhere(cardId);if(!c)return;
   if(!c.colors)c.colors=[];
   pushH();
   if(k==='none'){c.colors=[];}
   else{c.colors=[k];}
-  sched();renderBoard();renderSW();
+  sched();
+  if(isLimboCard(cardId))renderLimbo();else renderBoard();
+  renderSW();
 }
 function setBgColor(cardId,k){
-  const c=C().find(x=>x.id===cardId);if(!c)return;
-  pushH();c.bgColor=(k==='none'?null:k);sched();renderBoard();renderSW();
+  const c=findCardAnywhere(cardId);if(!c)return;
+  pushH();c.bgColor=(k==='none'?null:k);sched();
+  if(isLimboCard(cardId))renderLimbo();else renderBoard();
+  renderSW();
 }
 function cancel(){const hadSpot=colorSpot.size>0;const hadLink=linkHighlight!==null;pend=null;pendBoard=false;cpPanel=null;cpId=null;colorSpot.clear();linkHighlight=null;renderSW();if(hadSpot||hadLink){renderBoard();renderTbar();}}
 
 function setFS(cardId,val){
-  const c=C().find(x=>x.id===cardId);if(!c)return;
+  const c=findCardAnywhere(cardId);if(!c)return;
   c.fs=Math.min(48,Math.max(10,parseInt(val)||14));
   const el=document.querySelector(`.st[data-id="${cardId}"]`);
   if(el)el.style.fontSize=c.fs+'px';
@@ -956,15 +1109,15 @@ function renderTbar(){
     <button id="ub" style="opacity:${hasH?1:0.4};pointer-events:${hasH?'auto':'none'}">undo</button>
     <button id="fitbtn" style="${view==='list'?'display:none':''}">${fitMode?'exit fit':'fit all'}</button>
     <button id="flowbtn" title="toggle card flow direction" style="${view==='list'?'display:none':''}">${colFlow?'→ rows':'↓ cols'}</button>
+    <button id="filtbtn" style="${view==='list'?'display:none':''}" class="${(cpPanel==='border'&&cpId===null)||colorSpot.size>0?'tbtn-on':''}">filter</button>
+    <button id="prevbtn" style="${view==='list'?'display:none':''}" class="${showPrev?'tbtn-on':''}" title="toggle notes preview on card fronts">preview</button>
     <input type="range" id="zslider" min="40" max="150" value="${zoomLevel}" title="zoom" style="width:68px;cursor:pointer;accent-color:#888780;vertical-align:middle;-webkit-app-region:no-drag">
     <span id="zval" style="font-size:11px;color:#888780;min-width:32px;text-align:left;-webkit-app-region:no-drag">${zoomLevel}%</span>
     <button id="outbtn">outline</button>
     <button id="beatsbtn">beats</button>
-    <button id="selbtn" style="${view==='list'?'display:none':''}" class="${selMode?'tbtn-on':''}">${selMode&&selectedCards.size?'select ('+selectedCards.size+')':"select"}</button>
-    <button id="prevbtn" style="${view==='list'?'display:none':''}" class="${showPrev?'tbtn-on':''}" title="toggle notes preview on card fronts">preview</button>
     <button id="sumbtn">summary</button>
+    <button id="selbtn" style="${view==='list'?'display:none':''}" class="${selMode?'tbtn-on':''}">${selMode&&selectedCards.size?'select ('+selectedCards.size+')':"select"}</button>
     <button id="limbobtn" class="${limboOpen?'tbtn-on':''}">limbo${(limboByB[curB]&&limboByB[curB].length)?` (${limboByB[curB].length})`:''}</button>
-    <button id="filtbtn" style="${view==='list'?'display:none':''}" class="${(cpPanel==='border'&&cpId===null)||colorSpot.size>0?'tbtn-on':''}">filter</button>
     <span class="ctr"><span class="sdot" id="sdot"></span><span id="cnt">${countedScenes().length} scene${countedScenes().length===1?'':'s'}</span></span>
     <span style="color:#d3d1c7;margin:0 2px">|</span>
     <div id="actbar" style="display:flex;gap:4px;align-items:center;flex-wrap:nowrap"></div>
@@ -982,6 +1135,7 @@ function renderTbar(){
     const b=document.getElementById('board');
     b.style.zoom=zoomLevel/100;
     if(fitMode){fitMode=false;document.getElementById('fitbtn').textContent='fit all';}
+    autoFitTitles();
   });
   document.getElementById('outbtn').addEventListener('click',printOutline);
   document.getElementById('beatsbtn').addEventListener('click',printBeats);
@@ -1025,11 +1179,11 @@ function renderSW(){
   if(pend){
     const d=document.createElement('div');d.className='astrip warn';
     d.innerHTML=`<span class="sl d">Delete "${esc(pend.label)}"?</span><button class="dbtn" id="yb">delete</button><button id="nb">cancel</button>`;
-    d.querySelector('#yb').addEventListener('click',()=>pend.type==='card'?doDel():doDelB(pend.id));
+    d.querySelector('#yb').addEventListener('click',()=>(pend.type==='card'||pend.type==='limbo-card')?doDel():doDelB(pend.id));
     d.querySelector('#nb').addEventListener('click',cancel);
     sw.appendChild(d);
   } else if(cpPanel==='border'){
-    const c=cpId!==null?C().find(x=>x.id===cpId):null;
+    const c=cpId!==null?findCardAnywhere(cpId):null;
     const curColors=c?(c.colors||[]):[];
     const d=document.createElement('div');d.className='astrip';d.style.cssText='flex-wrap:wrap;gap:6px;align-items:center';
     const lbl=document.createElement('span');lbl.style.cssText='font-size:11px;color:#888780;flex-shrink:0;margin-right:2px';lbl.textContent='border color';d.appendChild(lbl);
@@ -1062,7 +1216,7 @@ function renderSW(){
     }
     if(c){
       const rst=document.createElement('button');rst.textContent='clear';rst.style.cssText='font-size:11px;padding:2px 7px';
-      rst.addEventListener('click',()=>{pushH();c.colors=[];sched();renderBoard();renderSW();});d.appendChild(rst);
+      rst.addEventListener('click',()=>{pushH();c.colors=[];sched();if(isLimboCard(cpId))renderLimbo();else renderBoard();renderSW();});d.appendChild(rst);
     }
     const hb=document.createElement('button');hb.textContent='close';hb.style.cssText='font-size:11px;padding:2px 7px';
     hb.addEventListener('click',cancel);d.appendChild(hb);
@@ -1091,7 +1245,7 @@ function renderSW(){
     }
     d.appendChild(list);sw.appendChild(d);
   } else if(cpPanel==='bg'){
-    const c=cpId!==null?C().find(x=>x.id===cpId):null;
+    const c=cpId!==null?findCardAnywhere(cpId):null;
     const d=document.createElement('div');d.className='astrip';
     const lbl=document.createElement('span');lbl.style.cssText='font-size:11px;color:#888780;flex-shrink:0';lbl.textContent='fill color';d.appendChild(lbl);
     if(!c){
@@ -1109,7 +1263,7 @@ function renderSW(){
       });
       const sep=document.createElement('span');sep.style.cssText='color:#d3d1c7;margin:0 4px';sep.textContent='|';d.appendChild(sep);
       const rst=document.createElement('button');rst.textContent='clear';rst.style.cssText='font-size:11px;padding:2px 7px';
-      rst.addEventListener('click',()=>{pushH();c.bgColor=null;sched();renderBoard();renderSW();});d.appendChild(rst);
+      rst.addEventListener('click',()=>{pushH();c.bgColor=null;sched();if(isLimboCard(cpId))renderLimbo();else renderBoard();renderSW();});d.appendChild(rst);
     }
     const hb=document.createElement('button');hb.textContent='close';hb.style.cssText='font-size:11px;padding:2px 7px';
     hb.addEventListener('click',cancel);d.appendChild(hb);
@@ -1130,6 +1284,19 @@ function renderBoard(){
   })();
 
   b.className=view==='list'?'clist':'cgrid'+(selMode?' selmode':'');b.innerHTML='';
+  // Accept drops from limbo onto board background (appends to end)
+  if(!b._limboDropInit){
+    b._limboDropInit=true;
+    b.addEventListener('dragover',e=>{if(dsrcLimbo){e.preventDefault();}});
+    b.addEventListener('drop',e=>{
+      if(!dsrcLimbo)return;
+      e.preventDefault();clearDO();
+      const lb=limboByB[curB]||[];
+      const li=lb.findIndex(c=>c.id===dsrcLimbo);
+      if(li!==-1){pushH();const[card]=lb.splice(li,1);delete card._originSn;delete card._originAct;delete card._originPrev;delete card._originNext;C().push(card);sched();renderBoard();renderTbar();renderLimbo();}
+      dsrcLimbo=null;
+    });
+  }
   let _actCollapsed=false;
   C().forEach((c,i)=>{
     if(visibleIds&&!visibleIds.has(c.id))return;
@@ -1142,30 +1309,31 @@ function renderBoard(){
   if(cnt)cnt.textContent=countedScenes().length+' scene'+(countedScenes().length===1?'':'s');
   const ub=document.getElementById('ub');
   if(ub){const h=hist.some(x=>x.board===curB);ub.style.opacity=h?1:0.4;ub.style.pointerEvents=h?'auto':'none';}
-  applyFit();applyFlow();
+  applyFit();applyFlow();autoFitTitles();
 }
 
+function setDarkCaret(el){
+  const dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  el.style.caretColor=dark?(el.classList.contains('st')?'#e8e6e0':'#b4b2a9'):'auto';
+}
 function attachEditable(el,wrap){
+  setDarkCaret(el);
   el.addEventListener('mousedown',()=>{wrap.draggable=false;});
-  el.addEventListener('focus',()=>{
-    const dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
-    el.style.caretColor=dark?(el.classList.contains('st')?'#e8e6e0':'#b4b2a9'):'';
-  });
-
-  el.addEventListener('blur',()=>{wrap.draggable=true;});
-  el.addEventListener('input',e=>{
-    const dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
-    if(dark) el.style.caretColor=el.classList.contains('st')?'#e8e6e0':'#b4b2a9';
-    onEdit(e);
-  });
+  el.addEventListener('focus',()=>{setDarkCaret(el);});
+  el.addEventListener('blur',()=>{wrap.draggable=true;setDarkCaret(el);});
+  el.addEventListener('input',e=>{setDarkCaret(el);onEdit(e);});
   el.addEventListener('keydown',e=>{
     if(e.key==='Tab'){
       e.preventDefault();
       const id=parseInt(el.dataset.id);
-      if(!isNaN(id))insertCardAfter(id);
+      if(!isNaN(id)&&!isLimboCard(id))insertCardAfter(id);
     }
   });
 }
+// Re-apply caret color on scheme change
+window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{
+  document.querySelectorAll('.st,.bn').forEach(setDarkCaret);
+});
 
 
 function makeCrd(c,i){
@@ -1174,7 +1342,7 @@ function makeCrd(c,i){
   w.addEventListener('dragstart',function(e){dsrc=this;this.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
   w.addEventListener('dragover',e=>{e.preventDefault();clearDO();w.classList.add('drag-over');});
   w.addEventListener('drop',onDrop);
-  w.addEventListener('dragend',()=>{clearDO();document.querySelectorAll('.cwrap').forEach(e=>e.classList.remove('dragging'));dsrc=null;});
+  w.addEventListener('dragend',()=>{clearDO();document.querySelectorAll('.cwrap').forEach(e=>e.classList.remove('dragging'));dsrc=null;const lboard=document.getElementById('lp-board');if(lboard)lboard.classList.remove('lp-drag-hi');});
   const colors=c.colors||(c.color&&c.color!=='none'?[c.color]:[]);
   const bgHex=cHex(c.bgColor);
   const tc=textColor(bgHex);
@@ -1273,8 +1441,9 @@ function makeLRow(c,i){
   const bds=bgHex?`background:${bgHex};outline:2px solid ${tc||'#1a1a18'};border-color:transparent;`:'';
   const ts=tc?`color:${tc};`:'';
   const cbar=makeColorBar(colors);
+  const _lrowOriginTxt=c._originSn?(c._originAct?c._originAct+' · SC. '+c._originSn:'SC. '+c._originSn):'';
   row.innerHTML=`
-    <div class="lnum" style="${c.nocount?'opacity:0.3;text-decoration:line-through':''}">${c.nocount?'\u2014':c.sn}</div>
+    <div class="lnum" style="${c.nocount?'opacity:0.3;text-decoration:line-through':''}" title="${_lrowOriginTxt?'from: '+_lrowOriginTxt:''}">${c.nocount?'\u2014':c.sn}${_lrowOriginTxt?`<div style="font-size:8px;color:#b4b2a9;font-style:italic;line-height:1.2;margin-top:1px;white-space:nowrap">${_lrowOriginTxt}</div>`:''}</div>
     <div class="lf" style="${cs}">
       ${cbar}
       <div class="st" contenteditable spellcheck="true" data-id="${c.id}" data-field="title" style="font-size:${getFS(c)};font-weight:500;outline:none;flex:1;line-height:1.4;user-select:text;cursor:text;${ts}">${esc(c.title)}</div>
@@ -1296,9 +1465,119 @@ function makeLRow(c,i){
   return row;
 }
 
+
+function makeLimboCrd(c,i){
+  const w=document.createElement('div');
+  w.className='cwrap'+(limboFlipped?' flipped':'');
+  w.dataset.limboCid=c.id;w.dataset.idx=i;w.draggable=true;
+  w.addEventListener('dragstart',function(e){
+    dsrcLimbo=c.id;dsrc=null;this.classList.add('dragging');e.dataTransfer.effectAllowed='move';
+  });
+  w.addEventListener('dragend',()=>{
+    dsrcLimbo=null;
+    document.querySelectorAll('.cwrap').forEach(e=>e.classList.remove('dragging'));
+    clearDO();
+  });
+  const colors=c.colors||(c.color&&c.color!=='none'?[c.color]:[]);
+  const bgHex=cHex(c.bgColor);const tc=textColor(bgHex);
+  const cs=bgHex?`background:${bgHex};`:'';
+  const ds=colorDotStyle(colors);
+  const bds=bgHex?`background:${bgHex};outline:2px solid ${tc||'#1a1a18'};border-color:transparent;`:'';
+  const ts=tc?`color:${tc};`:'';
+  const cbar=makeColorBar(colors);
+  const _origTxt=c._originSn?(c._originAct?c._originAct+' · SC. '+c._originSn:'SC. '+c._originSn):'';
+  const _origHtml=_origTxt?('<span style="font-size:9px;color:#b4b2a9;font-style:italic;margin:0 3px;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1" title="from: '+esc(_origTxt)+'">'+esc(_origTxt)+'</span>'):'<span style="flex:1"></span>';
+  const _restoreTip=_origTxt?'restore near original position ('+_origTxt+')':'restore to board';
+  w.innerHTML='<div class="ci">'
+    +'<div class="cf'+(bgHex?' filled':'')+'" style="'+cs+'">'
+    +cbar
+    +'<div class="sn" style="'+ts+'"><span>'+(c.nocount?'\u2014':'SC.\u202f'+c.sn)+'</span>'
+    +_origHtml
+    +'<span class="cdot" style="'+ds+'" title="border color"></span></div>'
+    +'<div class="st" contenteditable spellcheck="true" data-id="'+c.id+'" data-field="title" style="font-size:'+getFS(c)+';'+ts+'">'+esc(c.title)+'</div>'
+    +'<div class="ca">'
+    +'<span class="fsdot"><button class="fsdot-btn fsdot-dn" title="decrease font size">&#8249;</button>'
+    +'<span class="fsdot-num" style="background:'+(bgHex||'transparent')+';'+(tc?'color:'+tc+';':'')+'">'+(c.fs||14)+'</span>'
+    +'<button class="fsdot-btn fsdot-up" title="increase font size">&#8250;</button></span>'
+    +'<span class="spacer"></span>'
+    +'<button class="fbc" style="'+ts+'">notes</button>'
+    +'<button class="lrb" style="'+ts+'" title="'+_restoreTip+'">&#8629;</button>'
+    +'<button class="xb" style="'+ts+'">&#x2715;</button>'
+    +'</div>'
+    +'</div>'
+    +'<div class="cf bk" style="'+cs+'">'
+    +cbar
+    +'<div class="bl" style="'+ts+'">'+(c.nocount?esc(c.title):'SC.\u202f'+c.sn+' \u2014 notes')+'</div>'
+    +'<div class="bn" contenteditable spellcheck="true" data-id="'+c.id+'" data-field="notes">'+(c.notes||'')+'</div>'
+    +'<div class="ca"><span class="spacer"></span><button class="fbc" style="'+ts+'">front</button></div>'
+    +'</div>'
+    +'</div>';
+  const titleEl=w.querySelector('.st');const notesEl=w.querySelector('.bn');
+  attachEditable(titleEl,w);attachEditable(notesEl,w);
+  w.querySelector('.cdot').addEventListener('click',e=>{e.stopPropagation();openCP(c.id,'border');});
+  w.querySelectorAll('.fbc').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();w.classList.toggle('flipped');}));
+  w.querySelector('.lrb').addEventListener('click',e=>{e.stopPropagation();restoreFromLimbo(c.id);});
+  w.querySelector('.xb').addEventListener('click',e=>{e.stopPropagation();reqDelLimbo(c.id);});
+  const fsdot=w.querySelector('.fsdot');
+  if(fsdot){
+    function applyLFS(delta){
+      const card=findCardAnywhere(c.id);if(!card)return;
+      card.fs=Math.min(48,Math.max(10,(card.fs||14)+delta));
+      const el=w.querySelector('.st');if(el)el.style.fontSize=card.fs+'px';
+      const num=fsdot.querySelector('.fsdot-num');
+      if(num){num.textContent=card.fs;num.style.background=cHex(card.bgColor)||'transparent';num.style.color=textColor(cHex(card.bgColor))||'';}
+      sched();
+    }
+    function addLHold(btn,delta){
+      let ht=null,hi=null;
+      btn.addEventListener('mousedown',e=>{e.stopPropagation();applyLFS(delta);ht=setTimeout(()=>{hi=setInterval(()=>applyLFS(delta),80);},400);});
+      const stop=()=>{clearTimeout(ht);clearInterval(hi);};
+      btn.addEventListener('mouseup',stop);btn.addEventListener('mouseleave',stop);
+    }
+    addLHold(fsdot.querySelector('.fsdot-up'),1);
+    addLHold(fsdot.querySelector('.fsdot-dn'),-1);
+  }
+  return w;
+}
+
+function makeLimboLRow(c,i){
+  const row=document.createElement('div');
+  row.className='lrow';row.dataset.idx=i;row.draggable=true;
+  row.addEventListener('dragstart',function(e){
+    dsrcLimbo=c.id;dsrc=null;this.classList.add('dragging');e.dataTransfer.effectAllowed='move';
+  });
+  row.addEventListener('dragend',()=>{
+    dsrcLimbo=null;document.querySelectorAll('.lrow').forEach(e=>e.classList.remove('dragging'));clearDO();
+  });
+  const colors=c.colors||(c.color&&c.color!=='none'?[c.color]:[]);
+  const bgHex=cHex(c.bgColor);const tc=textColor(bgHex);
+  const cs=bgHex?`background:${bgHex};`:'';
+  const ds=colorDotStyle(colors);const ts=tc?`color:${tc};`:'';
+  const cbar=makeColorBar(colors);
+  const _lrowOriginTxt=c._originSn?(c._originAct?c._originAct+' · SC. '+c._originSn:'SC. '+c._originSn):'';
+  row.innerHTML=`
+    <div class="lnum" style="${c.nocount?'opacity:0.3;text-decoration:line-through':''}" title="${_lrowOriginTxt?'from: '+_lrowOriginTxt:''}">${c.nocount?'\u2014':c.sn}${_lrowOriginTxt?`<div style="font-size:8px;color:#b4b2a9;font-style:italic;line-height:1.2;margin-top:1px;white-space:nowrap">${_lrowOriginTxt}</div>`:''}</div>
+    <div class="lf" style="${cs}">${cbar}
+      <div class="st" contenteditable spellcheck="true" data-id="${c.id}" data-field="title" style="font-size:${getFS(c)};font-weight:500;outline:none;flex:1;line-height:1.4;user-select:text;cursor:text;${ts}">${esc(c.title)}</div>
+    </div>
+    <div class="lf bk" style="${cs}">${cbar}
+      <div class="bn" contenteditable spellcheck="true" data-id="${c.id}" data-field="notes" style="font-size:12px;outline:none;flex:1;line-height:1.5;user-select:text;cursor:text;${ts}">${c.notes||''}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;flex-shrink:0">
+      <span class="cdot" style="${ds}" title="border color"></span>
+      <button class="lrb" style="font-size:11px;padding:2px 5px" title="restore to board">&#8629;</button>
+      <button class="xb" style="font-size:11px;padding:2px 6px">&#x2715;</button>
+    </div>`;
+  const titleEl=row.querySelector('.st');const notesEl=row.querySelector('.bn');
+  attachEditable(titleEl,row);attachEditable(notesEl,row);
+  row.querySelector('.cdot').addEventListener('click',e=>{e.stopPropagation();openCP(c.id,'border');});
+  row.querySelector('.lrb').addEventListener('click',e=>{e.stopPropagation();restoreFromLimbo(c.id);});
+  row.querySelector('.xb').addEventListener('click',e=>{e.stopPropagation();reqDelLimbo(c.id);});
+  return row;
+}
 function onEdit(e){
   const el=e.target,id=parseInt(el.dataset.id),field=el.dataset.field;
-  const c=C().find(x=>x.id===id);if(!c)return;
+  const c=findCardAnywhere(id);if(!c)return;
   pushCH(id);
   c[field]=(field==='notes')?el.innerHTML:el.innerText.trim();
   if(c.nocount&&field==='title')renderActBar();
@@ -1307,6 +1586,17 @@ function onEdit(e){
 
 function onDrop(e){
   e.preventDefault();clearDO();
+  // Case 1: limbo card dropped on a board card – restore at that position
+  if(dsrcLimbo){
+    const toIdx=parseInt(this.dataset.idx);
+    if(!isNaN(toIdx)){
+      const lb=limboByB[curB]||[];
+      const li=lb.findIndex(c=>c.id===dsrcLimbo);
+      if(li!==-1){pushH();const[card]=lb.splice(li,1);delete card._originSn;delete card._originAct;delete card._originPrev;delete card._originNext;C().splice(toIdx,0,card);sched();renderBoard();renderTbar();renderLimbo();}
+    }
+    dsrcLimbo=null;return;
+  }
+  // Case 2: normal board reorder
   if(!dsrc||dsrc===this)return;
   const from=parseInt(dsrc.dataset.idx),to=parseInt(this.dataset.idx);
   if(isNaN(from)||isNaN(to))return;
@@ -1326,6 +1616,26 @@ function toggleFlow(){
   const btn=document.getElementById('flowbtn');
   if(btn)btn.textContent=colFlow?'→ rows':'↓ cols';
   renderBoard();
+}
+
+function autoFitTitles(){
+  // Display-only: shrink title text until it fits the card face.
+  // The stored c.fs value is never modified.
+  if(view==='list')return;
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('#board .cwrap .cf:not(.bk) .st').forEach(el=>{
+      const id=parseInt(el.dataset.id);
+      const c=C().find(x=>x.id===id);if(!c)return;
+      const stored=c.fs||14;
+      el.style.fontSize=stored+'px'; // reset to stored size each render
+      if(el.scrollHeight<=el.clientHeight+2)return; // already fits
+      let fs=stored;
+      while(el.scrollHeight>el.clientHeight+2&&fs>7){
+        fs--;
+        el.style.fontSize=fs+'px';
+      }
+    });
+  });
 }
 
 function applyFlow(){
@@ -1387,6 +1697,7 @@ function applyFit(){
   zoomLevel=Math.round(bestZoom*100);
   const sl=document.getElementById('zslider');const zv=document.getElementById('zval');
   if(sl)sl.value=zoomLevel;if(zv)zv.textContent=zoomLevel+'%';
+  autoFitTitles();
 }
 
 function toggleFS(){
@@ -1450,6 +1761,64 @@ function importData(){
     reader.readAsText(file);
   });
   inp.click();
+}
+
+function printLimbo(){
+  const projTitle=currentFilePath?currentFilePath.split('/').pop().replace(/\.screenplaycards$/i,''):'Untitled';
+  const board=boards.find(x=>x.id===curB);
+  const boardName=board?board.name:'';
+  const writerLine=writer.trim()||'';
+  const cards=limboByB[curB]||[];
+
+  let body='';
+  cards.forEach(c=>{
+    // Use stored origin scene number for numbering; fall back to current sn
+    const scNum=c._originSn||c.sn;
+    const num=c.nocount?'&mdash;':'SC.\u202f'+scNum;
+    const titleHtml=esc((c.title||'').trim())||'<em style="color:#b4b2a9">untitled</em>';
+    const rawNotes=(c.notes||'').trim();
+    const notesHtml=rawNotes?'<div class="scene-notes">'+rawNotes+'</div>':'';
+    // Show original position as a small label if available
+    const originParts=[];
+    if(c._originAct)originParts.push(esc(c._originAct));
+    if(c._originSn)originParts.push('SC.\u202f'+c._originSn);
+    const originHtml=originParts.length?'<div class="origin">from: '+originParts.join(' \u00b7 ')+'</div>':'';
+    body+='<div class="scene"><div class="scene-head"><span class="scene-num">'+num+'</span><span class="scene-title">'+titleHtml+'</span></div>'+originHtml+notesHtml+'</div>';
+  });
+
+  if(!body)body='<p class="empty">No cards in Limbo SideBoard.</p>';
+
+  const html='<!DOCTYPE html><html><head><meta charset="UTF-8">'
+    +'<title>'+esc(projTitle)+' \u2014 Limbo SideBoard</title>'
+    +'<style>'
+    +'body{font-family:Georgia,serif;max-width:680px;margin:48px auto;padding:0 24px;color:#1a1a18;line-height:1.6}'
+    +'h1{font-size:22px;font-weight:700;margin:0 0 3px}'
+    +'.sub{font-size:13px;color:#888;margin:0 0 2px;font-family:-apple-system,sans-serif}'
+    +'.sub.limbo{font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#b4b2a9;margin-bottom:4px}'
+    +'.writer-line{font-size:13px;color:#1a1a18;border-bottom:0.5px solid #ccc;padding-bottom:2px;min-width:180px;display:inline-block}'
+    +'.writer-label{font-size:12px;color:#888;margin-bottom:32px}'
+    +'.scene{margin-bottom:24px}'
+    +'.scene-head{display:flex;gap:10px;align-items:baseline}'
+    +'.scene-num{font-size:12px;color:#888780;font-family:-apple-system,sans-serif;font-weight:600;min-width:48px;flex-shrink:0;padding-top:3px}'
+    +'.scene-title{font-size:16px;font-weight:600}'
+    +'.origin{font-size:11px;color:#b4b2a9;font-style:italic;padding-left:48px;margin-top:2px;font-family:-apple-system,sans-serif}'
+    +'.scene-notes{font-size:14px;color:#444;margin-top:5px;padding-left:48px;line-height:1.6}'
+    +'.scene-notes>div,.scene-notes>p{margin:0}'
+    +'.empty{color:#888;font-style:italic}'
+    +'</style></head><body>'
+    +'<h1>'+esc(projTitle)+'</h1>'
+    +(boardName?'<div class="sub">'+esc(boardName)+'</div>':'')
+    +'<div class="sub limbo">Limbo SideBoard</div>'
+    +'<div class="writer-label">Written by: <span class="writer-line">'+esc(writerLine)+'</span></div>'
+    +body
+    +'</body></html>';
+
+  if(window.electronAPI){
+    window.electronAPI.printHTML(html);
+  } else {
+    const w=window.open('','_blank');
+    if(w){w.document.write(html);w.document.close();setTimeout(()=>w.print(),400);}
+  }
 }
 
 function printOutline(){

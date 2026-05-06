@@ -69,6 +69,11 @@ function createWindow(filePath = null) {
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
     if (filePath) openFile(filePath);
+    // Run update check after window is visible (packaged only)
+    // Welcome panel has already rendered by this point — dialog appears on top
+    if (app.isPackaged) {
+      setTimeout(() => autoUpdater.checkForUpdatesAndNotify(), 2000);
+    }
   });
 
   const saveBounds = () => {
@@ -490,14 +495,6 @@ app.whenReady().then(() => {
   // Always start with no file — welcome panel shows recent files if showWelcome pref is true
   createWindow(null);
   setupAutoUpdater();
-
-  // Update check runs before welcome panel — renderer waits for app:ready signal
-  // Signal is sent after update dialog resolves (or immediately in dev mode)
-  if (!app.isPackaged) {
-    setTimeout(() => { if (mainWindow) mainWindow.webContents.send('app:ready'); }, 500);
-  } else {
-    setTimeout(() => autoUpdater.checkForUpdatesAndNotify(), 1000);
-  }
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
