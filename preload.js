@@ -48,6 +48,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
       'app:print-outline',
       'app:print-beats',
       'app:print-summary',
+      'app:ready',
+      'app:open-cancelled',
     ];
     if (allowed.includes(channel)) {
       const wrapped = (e, ...args) => fn(...args);

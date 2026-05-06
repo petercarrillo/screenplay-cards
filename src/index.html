@@ -331,7 +331,6 @@ let nid=1;
 let hist=[];let cardHist={};let cardRedo={};let redoHist=[];
 let pend=null;
 let pendBoard=false;  // true when add-board prompt is showing
-let pendPrint=null;   // 'outline'|'beats'|'summary' when export picker is showing
 let cpId=null;
 let cpPanel=null;
 let flipped=false;
@@ -368,11 +367,10 @@ const countedScenes=()=>{
   return C().filter(c=>!c.nocount&&(!visibleIds||visibleIds.has(c.id)));
 };
 const isActHeader=c=>c.nocount&&/act/i.test(c.title||'');
-const getActSections=()=>getActSectionsForBoard(curB);
-const getActSectionsForBoard=(bid)=>{
+const getActSections=()=>{
   const sections=[];
   let cur=null;
-  (byB[bid]||[]).forEach(c=>{
+  C().forEach(c=>{
     if(isActHeader(c)){cur={label:(c.title||'').trim(),ids:new Set([c.id])};sections.push(cur);}
     else if(cur){cur.ids.add(c.id);}
   });
@@ -402,6 +400,13 @@ const clearDO=()=>document.querySelectorAll('.cwrap,.lrow').forEach(e=>e.classLi
 
 async function doLoad(){
   if(window.electronAPI){
+    // Wait for app:ready signal from main (fires after update check resolves)
+    await new Promise(resolve=>{
+      let done=false;
+      const cleanup=window.electronAPI.on('app:ready',()=>{if(!done){done=true;if(cleanup)cleanup();resolve();}});
+      // 6-second fallback in case signal never arrives
+      setTimeout(()=>{if(!done){done=true;resolve();}},6000);
+    });
     try{
       const d=await window.electronAPI.getWelcomeData();
       if(d.showWelcome&&!currentFilePath){showWelcomePanel();return;}
@@ -503,7 +508,7 @@ function addB(){
   const hasContent=boards.length>1||C().length>0;
   if(!hasContent){doAddBlankBoard();return;}
   // Otherwise show the add-board prompt
-  pendPrint=null;selMode=false;selectedCards.clear();pend=null;cpPanel=null;cpId=null;pendBoard=true;renderSW();
+  pendBoard=true;pend=null;cpPanel=null;cpId=null;renderSW();
 }
 
 function doAddBlankBoard(){
@@ -542,7 +547,6 @@ function renameB(id,el){
 function reqDelB(id){
   if(boards.length<=1)return;
   const b=boards.find(x=>x.id===id);
-  pendPrint=null;pendBoard=false;selMode=false;selectedCards.clear();
   pend={type:'board',id,label:b?b.name:''};cpId=null;renderSW();
 }
 
@@ -635,32 +639,21 @@ function toggleActCollapse(cardId){
   renderBoard();
 }
 
-function showPrintPicker(type){
-  if(boards.length<=1){
-    if(type==='outline')printOutline(curB);
-    else if(type==='beats')printBeats(curB);
-    else printSummary(curB);
-    return;
-  }
-  selMode=false;selectedCards.clear();pendBoard=false;pend=null;cpPanel=null;cpId=null;pendPrint=type;renderSW();
-}
-
-function printSummary(boardId=curB){
+function printSummary(){
   const projTitle=currentFilePath?currentFilePath.split('/').pop().replace(/\.screenplaycards$/i,''):'Untitled';
-  const board=boards.find(x=>x.id===boardId);
+  const board=boards.find(x=>x.id===curB);
   const boardName=board?board.name:'';
   const writerLine=writer.trim()||'';
   const dateStr=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-  const sections=getActSectionsForBoard(boardId);
-  const boardCards=byB[boardId]||[];
-  const allCards=boardCards.filter(c=>!isActHeader(c));
+  const sections=getActSections();
+  const allCards=C().filter(c=>!isActHeader(c));
   const totalScenes=allCards.filter(c=>!c.nocount).length;
   const totalNotes=allCards.filter(c=>c.notes&&c.notes.trim()).length;
   let rows='';
   if(sections.length){
     sections.forEach(s=>{
-      const sc=boardCards.filter(c=>s.ids.has(c.id)&&!isActHeader(c)&&!c.nocount).length;
-      const sn=boardCards.filter(c=>s.ids.has(c.id)&&!isActHeader(c)&&c.notes&&c.notes.trim()).length;
+      const sc=C().filter(c=>s.ids.has(c.id)&&!isActHeader(c)&&!c.nocount).length;
+      const sn=C().filter(c=>s.ids.has(c.id)&&!isActHeader(c)&&c.notes&&c.notes.trim()).length;
       rows+=`<tr><td class="act-name">${esc(s.label)}</td><td class="num">${sc}</td><td class="num">${sn}</td><td class="num">${sc>0?Math.round(sn/sc*100):0}%</td></tr>`;
     });
   } else {
@@ -689,7 +682,7 @@ function printSummary(boardId=curB){
     +'<tbody>'+rows+'</tbody>'
     +'<tfoot><tr><td>Total</td><td class="num">'+totalScenes+'</td><td class="num">'+totalNotes+'</td><td class="num">'+(totalScenes>0?Math.round(totalNotes/totalScenes*100):0)+'%</td></tr></tfoot>'
     +'</table>'
-    +((limboByB[boardId]&&limboByB[boardId].length)?'<div class="limbo-note">'+limboByB[boardId].length+' card'+(limboByB[boardId].length===1?'':'s')+' in Limbo (not included above)</div>':'')
+    +((limboByB[curB]&&limboByB[curB].length)?'<div class="limbo-note">'+limboByB[curB].length+' card'+(limboByB[curB].length===1?'':'s')+' in Limbo (not included above)</div>':'')
     +'</body></html>';
   if(window.electronAPI){window.electronAPI.printHTML(html);}
   else{const w=window.open('','_blank');if(w){w.document.write(html);w.document.close();setTimeout(()=>w.print(),400);}}
@@ -739,8 +732,7 @@ function hideWelcomePanel(){
 
 function toggleSelMode(){
   selMode=!selMode;
-  if(selMode){pendPrint=null;pendBoard=false;pend=null;cpPanel=null;cpId=null;}
-  else{selectedCards.clear();}
+  if(!selMode)selectedCards.clear();
   renderBoard();renderTbar();renderSW();
 }
 
@@ -821,7 +813,6 @@ function insertCardAfter(cardId){
 
 function reqDel(cardId){
   const c=C().find(x=>x.id===cardId);
-  pendPrint=null;pendBoard=false;selMode=false;selectedCards.clear();
   pend={type:'card',cardId,label:c?c.title||'untitled':'untitled'};
   cpId=null;renderSW();
 }
@@ -836,7 +827,7 @@ function doDel(){
 function openCP(cardId,mode){
   const m=mode||'border';
   if(cpPanel===m&&cpId===cardId){cpPanel=null;cpId=null;const hadSpot=colorSpot.size>0;colorSpot.clear();renderSW();renderTbar();if(hadSpot)renderBoard();return;}
-  pendPrint=null;pendBoard=false;cpPanel=m;cpId=cardId;pend=null;renderSW();
+  cpPanel=m;cpId=cardId;pend=null;renderSW();
 }
 function toggleColor(cardId,k){
   const c=C().find(x=>x.id===cardId);if(!c)return;
@@ -850,7 +841,7 @@ function setBgColor(cardId,k){
   const c=C().find(x=>x.id===cardId);if(!c)return;
   pushH();c.bgColor=(k==='none'?null:k);sched();renderBoard();renderSW();
 }
-function cancel(){const hadSpot=colorSpot.size>0;const hadLink=linkHighlight!==null;pend=null;pendBoard=false;pendPrint=null;cpPanel=null;cpId=null;colorSpot.clear();linkHighlight=null;renderSW();if(hadSpot||hadLink){renderBoard();renderTbar();}}
+function cancel(){const hadSpot=colorSpot.size>0;const hadLink=linkHighlight!==null;pend=null;pendBoard=false;cpPanel=null;cpId=null;colorSpot.clear();linkHighlight=null;renderSW();if(hadSpot||hadLink){renderBoard();renderTbar();}}
 
 function setFS(cardId,val){
   const c=C().find(x=>x.id===cardId);if(!c)return;
@@ -992,11 +983,11 @@ function renderTbar(){
     b.style.zoom=zoomLevel/100;
     if(fitMode){fitMode=false;document.getElementById('fitbtn').textContent='fit all';}
   });
-  document.getElementById('outbtn').addEventListener('click',()=>showPrintPicker('outline'));
-  document.getElementById('beatsbtn').addEventListener('click',()=>showPrintPicker('beats'));
+  document.getElementById('outbtn').addEventListener('click',printOutline);
+  document.getElementById('beatsbtn').addEventListener('click',printBeats);
   document.getElementById('selbtn').addEventListener('click',toggleSelMode);
   document.getElementById('prevbtn').addEventListener('click',()=>{showPrev=!showPrev;renderBoard();renderTbar();});
-  document.getElementById('sumbtn').addEventListener('click',()=>showPrintPicker('summary'));
+  document.getElementById('sumbtn').addEventListener('click',printSummary);
   document.getElementById('limbobtn').addEventListener('click',toggleLimbo);
   document.getElementById('filtbtn').addEventListener('click',()=>openCP(null,'border'));
   document.getElementById('fscrn').addEventListener('click',toggleFS);
@@ -1013,28 +1004,6 @@ function renderSW(){
     const db=document.createElement('button');db.className='dbtn';db.style.cssText='background:#fcebeb;color:#a32d2d;border-color:#f09595';db.textContent='delete';
     db.addEventListener('click',()=>{if(confirm('Delete '+selectedCards.size+' card'+(selectedCards.size===1?'':'s')+'?'))deleteSelected();});d.appendChild(db);
     const clb=document.createElement('button');clb.textContent='clear';clb.addEventListener('click',clearSelection);d.appendChild(clb);
-    sw.appendChild(d);return;
-  }
-  if(pendPrint){
-    const typeLabels={'outline':'Step Outline','beats':'Beat Sheet','summary':'Scene Summary'};
-    const capturedType=pendPrint;
-    const d=document.createElement('div');d.className='astrip';
-    d.style.cssText='gap:8px;align-items:center;flex-wrap:wrap';
-    const lbl=document.createElement('span');lbl.style.cssText='font-size:11px;color:#888780;flex-shrink:0';
-    lbl.textContent='Export '+typeLabels[capturedType]+' for board:';d.appendChild(lbl);
-    const sel=document.createElement('select');sel.style.cssText='font-size:11px;padding:2px 4px;border:0.5px solid #b4b2a9;border-radius:6px;background:#fff;color:#1a1a18;font-family:inherit';
-    boards.forEach(b=>{const opt=document.createElement('option');opt.value=b.id;opt.textContent=b.name;if(b.id===curB)opt.selected=true;sel.appendChild(opt);});
-    d.appendChild(sel);
-    const genBtn=document.createElement('button');genBtn.textContent='generate';genBtn.style.cssText='font-size:11px;padding:2px 8px';
-    genBtn.addEventListener('click',()=>{
-      const bid=sel.value;pendPrint=null;renderSW();
-      if(capturedType==='outline')printOutline(bid);
-      else if(capturedType==='beats')printBeats(bid);
-      else printSummary(bid);
-    });
-    const clsBtn=document.createElement('button');clsBtn.textContent='cancel';clsBtn.style.cssText='font-size:11px;padding:2px 8px';
-    clsBtn.addEventListener('click',cancel);
-    d.appendChild(genBtn);d.appendChild(clsBtn);
     sw.appendChild(d);return;
   }
   if(pendBoard){
@@ -1483,15 +1452,14 @@ function importData(){
   inp.click();
 }
 
-function printOutline(boardId=curB){
+function printOutline(){
   const projTitle=currentFilePath?currentFilePath.split('/').pop().replace(/\.screenplaycards$/i,''):'Untitled';
-  const board=boards.find(x=>x.id===boardId);
+  const board=boards.find(x=>x.id===curB);
   const boardName=board?board.name:'';
   const writerLine=writer.trim()||'';
   const dateStr=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
 
-  const sections=getActSectionsForBoard(boardId);
-  const boardCards=byB[boardId]||[];
+  const sections=getActSections();
   const visibleIds=actFilter.size===0?null:(()=>{
     const ids=new Set();
     sections.filter(s=>actFilter.has(s.label)).forEach(s=>s.ids.forEach(id=>ids.add(id)));
@@ -1500,7 +1468,7 @@ function printOutline(boardId=curB){
   const filterLabel=actFilter.size>0?(' — '+Array.from(actFilter).join(', ')):'';
 
   let body='';
-  boardCards.forEach(c=>{
+  C().forEach(c=>{
     if(visibleIds&&!visibleIds.has(c.id))return;
     if(isActHeader(c)){
       body+='<div class="act">'+esc(c.title||'')+'</div>';
@@ -1514,8 +1482,8 @@ function printOutline(boardId=curB){
   });
 
   let legendHtml='';
-  const usedColorKeys=new Set(boardCards.flatMap(c=>c.colors||[]));
-  const leg=legByB[boardId]||{};
+  const usedColorKeys=new Set(C().flatMap(c=>c.colors||[]));
+  const leg=legByB[curB]||{};
   const legendColors=COLORS.filter(cl=>cl.h&&usedColorKeys.has(cl.k));
   if(legendColors.length){
     legendHtml+='<div class="leg-section"><div class="leg-title">Color Legend</div><div class="leg-grid">';
@@ -1563,7 +1531,7 @@ function printOutline(boardId=curB){
 
 
 
-function printBeats(boardId=curB){
+function printBeats(){
   const projTitle=currentFilePath?currentFilePath.split('/').pop().replace(/\.screenplaycards$/i,''):'Untitled';
   const board=boards.find(x=>x.id===curB);
   const boardName=board?board.name:'';
@@ -1579,7 +1547,7 @@ function printBeats(boardId=curB){
   const filterLabel=actFilter.size>0?(' — '+Array.from(actFilter).join(', ')):'';
 
   let body='';
-  boardCards.forEach(c=>{
+  C().forEach(c=>{
     if(visibleIds&&!visibleIds.has(c.id))return;
     if(isActHeader(c)){
       body+='<div class="act">'+esc(c.title||'')+'</div>';
@@ -1655,9 +1623,9 @@ if(window.electronAPI){
   window.electronAPI.on('app:flip-all',()=>flipAll());
   window.electronAPI.on('app:fit-all',()=>toggleFit());
   window.electronAPI.on('app:set-view',(v)=>setView(v));
-  window.electronAPI.on('app:print-outline',()=>showPrintPicker('outline'));
-  window.electronAPI.on('app:print-beats',()=>showPrintPicker('beats'));
-  window.electronAPI.on('app:print-summary',()=>showPrintPicker('summary'));
+  window.electronAPI.on('app:print-outline',()=>printOutline());
+  window.electronAPI.on('app:print-beats',()=>printBeats());
+  window.electronAPI.on('app:print-summary',()=>printSummary());
 }
 
 </script>

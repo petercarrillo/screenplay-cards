@@ -335,6 +335,8 @@ function setupAutoUpdater() {
           buttons: ['OK'], defaultId: 0,
         });
       }
+      // Welcome panel can now show
+      if (mainWindow) mainWindow.webContents.send('app:ready');
     });
   });
 
@@ -348,6 +350,8 @@ function setupAutoUpdater() {
         buttons: ['OK'],
       });
     }
+    // Welcome panel can now show
+    if (mainWindow) mainWindow.webContents.send('app:ready');
   });
 
   autoUpdater.on('update-downloaded', () => {
@@ -371,6 +375,8 @@ function setupAutoUpdater() {
       detail: err.message || 'Please check your internet connection and try again.',
       buttons: ['OK'],
     });
+    // Welcome panel can now show even if update check failed
+    mainWindow.webContents.send('app:ready');
   });
 }
 
@@ -486,10 +492,13 @@ app.whenReady().then(() => {
   createWindow(lastFile && require('fs').existsSync(lastFile) ? lastFile : null);
   setupAutoUpdater();
 
-  // Check for updates 3 seconds after launch (packaged app only)
-  setTimeout(() => {
-    if (app.isPackaged) autoUpdater.checkForUpdatesAndNotify();
-  }, 3000);
+  // Update check runs before welcome panel — renderer waits for app:ready signal
+  // Signal is sent after update dialog resolves (or immediately in dev mode)
+  if (!app.isPackaged) {
+    setTimeout(() => { if (mainWindow) mainWindow.webContents.send('app:ready'); }, 500);
+  } else {
+    setTimeout(() => autoUpdater.checkForUpdatesAndNotify(), 1000);
+  }
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
