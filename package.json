@@ -28,7 +28,7 @@
     "mac": {
       "category": "public.app-category.productivity",
       "icon": "assets/icon.icns",
-      "artifactName": "Screenplay-Cards-${version}-${arch}-mac.${ext}",
+      "artifactName": "Screenplay-Cards-${arch}-mac.${ext}",
       "target": [
         {
           "target": "dmg",
