@@ -281,6 +281,23 @@ ipcMain.handle('print:html', async (e, html) => {
   }
 });
 
+// ── Save plain text file (Fountain / FDX export) ──────────────────────────────
+ipcMain.handle('file:save-text', (e, { content, defaultName, extension, filterName }) => {
+  const result = dialog.showSaveDialogSync(mainWindow, {
+    title: 'Export',
+    defaultPath: path.join(app.getPath('documents'), defaultName || 'export.' + extension),
+    filters: [{ name: filterName || 'Script', extensions: [extension] }],
+  });
+  if (!result) return { success: false, cancelled: true };
+  try {
+    fs.writeFileSync(result, content, 'utf8');
+    return { success: true, filePath: result };
+  } catch (err) {
+    dialog.showErrorBox('Export failed', err.message);
+    return { success: false, error: err.message };
+  }
+});
+
 // ── Context menu ───────────────────────────────────────────────────────────────
 ipcMain.handle('context:show', (e, opts) => {
   return new Promise(resolve => {
@@ -428,6 +445,8 @@ function buildMenu() {
         { type: 'separator' },
         { label: 'Save', accelerator: 'CmdOrCtrl+S', click: () => mainWindow && mainWindow.webContents.send('app:save') },
         { label: 'Save As…', accelerator: 'CmdOrCtrl+Shift+S', click: () => mainWindow && mainWindow.webContents.send('app:save-as') },
+        { type: 'separator' },
+        { label: 'Export for Screenwriting Software…', click: () => mainWindow && mainWindow.webContents.send('app:export-screenwriting') },
         { type: 'separator' },
         { role: 'close' },
       ],

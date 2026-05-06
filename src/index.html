@@ -200,6 +200,8 @@ body{padding-top:0}
   .np-inner{flex:1;display:flex;flex-direction:column;overflow:hidden;padding:0 8px 4rem 0;min-width:0}
   .np-board{flex:1;overflow-y:auto;overflow-x:hidden}
   .np-note{border:0.5px solid #d3d1c7;border-radius:10px;overflow:hidden;margin-bottom:8px}
+  .np-note.drag-over{outline:2px solid #378add;outline-offset:-1px}
+  .np-note.dragging{opacity:0.4}
   .np-note-meta{display:flex;align-items:center;gap:4px;padding:4px 8px;border-bottom:0.5px solid #e8e6e0;flex-shrink:0}
   .np-note-title{font-size:14px;font-weight:600;outline:none;padding:7px 10px;line-height:1.4;cursor:text;min-height:28px;border-bottom:0.5px solid #e8e6e0}
   .np-note-body{font-size:13px;outline:none;padding:8px 10px;line-height:1.6;cursor:text;min-height:80px}
@@ -237,6 +239,91 @@ body{padding-top:0}
   .wp-recent-item:hover{background:#e8e6e0;color:#1a1a18}
   .wp-pref{display:flex;align-items:center;gap:8px;margin-top:18px;font-size:12px;color:#b4b2a9;cursor:pointer;padding-top:14px;border-top:1px solid #e8e6e0;user-select:none}
   .wp-pref input{cursor:pointer;accent-color:#1a1a18;-webkit-app-region:no-drag}
+
+/* ── Export panel ─────────────────────────────────────────────────────────── */
+#export-overlay{position:fixed;inset:0;background:rgba(26,26,24,0.5);display:flex;align-items:center;justify-content:center;z-index:1000;-webkit-app-region:no-drag}
+#export-overlay.hidden{display:none}
+#export-panel{background:#f5f4f0;border-radius:16px;padding:28px 32px;width:540px;max-height:84vh;overflow-y:auto;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 64px rgba(0,0,0,0.28);border:0.5px solid #d3d1c7}
+.ep-hdr{display:flex;align-items:center;justify-content:space-between}
+.ep-title{font-size:17px;font-weight:700;color:#1a1a18;letter-spacing:-0.2px}
+.ep-close{font-size:13px;padding:3px 9px;background:transparent;border-color:#d3d1c7;color:#888780}
+.ep-instr{background:#f0efe8;border-radius:10px;padding:12px 14px;border:0.5px solid #e0ddd8}
+.ep-instr-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.ep-instr-ttl{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#888780}
+.ep-instr-dismiss{font-size:11px;padding:2px 7px;color:#888780;background:transparent;border-color:#d3d1c7}
+.ep-instr-body{font-size:12px;color:#5f5e5a;line-height:1.65}
+.ep-instr-body p{margin-bottom:7px}
+.ep-instr-body ul{padding-left:16px;display:flex;flex-direction:column;gap:4px}
+.ep-instr-body li{list-style:disc}
+.ep-instr-body code{font-family:ui-monospace,monospace;font-size:11px;background:#e8e6e0;border-radius:3px;padding:1px 4px}
+.ep-instr-show{font-size:11px;padding:2px 8px;align-self:flex-start;color:#888780;background:transparent;border-color:#d3d1c7}
+.ep-board-info{font-size:13px;color:#5f5e5a;padding:8px 12px;background:#fff;border-radius:8px;border:0.5px solid #e0ddd8;line-height:1.5}
+.ep-board-info strong{color:#1a1a18}
+.ep-fmt-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#888780}
+.ep-fmt-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ep-fmt-card{border:1.5px solid #d3d1c7;border-radius:12px;padding:14px 16px;cursor:pointer;background:#fff;transition:border-color 0.1s,background 0.1s}
+.ep-fmt-card:hover{border-color:#b4b2a9;background:#faf9f6}
+.ep-fmt-card.ep-selected{border-color:#378add;background:#f0f7ff}
+.ep-fmt-name{font-size:16px;font-weight:600;color:#1a1a18;margin-bottom:6px}
+.ep-fmt-apps{display:flex;flex-direction:column;gap:3px}
+.ep-fmt-apps span{font-size:12px;color:#888780}
+.ep-fmt-card.ep-selected .ep-fmt-name{color:#1a6bb5}
+.ep-fmt-card.ep-selected .ep-fmt-apps span{color:#4a8ac4}
+.ep-warn{background:#fff8ec;border:0.5px solid #f0c86a;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.ep-warn-hdr{font-size:12px;font-weight:600;color:#8a6200}
+.ep-warn-list{max-height:160px;overflow-y:auto;border:0.5px solid #e8dfc4;border-radius:7px;background:#fff;padding:6px 10px;display:flex;flex-direction:column;gap:2px}
+.ep-warn-item{font-size:12px;color:#5f5e5a;padding:2px 0;border-bottom:0.5px solid #f5f0e8;display:flex;align-items:center;gap:7px}
+.ep-warn-status{font-size:11px;flex-shrink:0;width:14px;text-align:center;color:#8a6200}
+.ep-warn-input{font-size:12px;flex:1;border:0.5px solid transparent;border-radius:4px;padding:2px 5px;background:transparent;font-family:inherit;color:#5f5e5a;outline:none;min-width:0}
+.ep-warn-input:focus{border-color:#b4b2a9;background:#fff}
+.ep-warn-input::placeholder{color:#b4b2a9;font-style:italic}
+.ep-warn-item.ep-warn-resolved .ep-warn-status{color:#3b6d11}
+.ep-warn-item.ep-warn-resolved .ep-warn-input{color:#3b6d11}
+.ep-warn.ep-warn-ok{background:#edf7e8;border-color:#7ec87a}
+.ep-warn.ep-warn-ok .ep-warn-hdr{color:#2d6b28}
+.ep-warn-item:last-child{border-bottom:none}
+.ep-warn-note{font-size:11px;color:#8a6200;font-style:italic}
+.ep-footer{display:flex;gap:8px;align-items:center;padding-top:12px;border-top:0.5px solid #e0ddd8;margin-top:2px}
+.ep-export-btn{font-size:14px;padding:9px 22px;background:#1a1a18;color:#f5f4f0;border-color:#1a1a18;border-radius:10px;font-weight:500}
+.ep-export-btn:hover{background:#2c2c2a}
+.ep-cancel-btn{font-size:13px;padding:9px 14px;border-color:#d3d1c7;color:#5f5e5a}
+@media(prefers-color-scheme:dark){
+  #export-panel{background:#242422;border-color:#444441}
+  .ep-title{color:#e8e6e0}
+  .ep-close{border-color:#444441;color:#888780}
+  .ep-close:hover{background:#3a3a38}
+  .ep-instr{background:#2c2c2a;border-color:#3a3a38}
+  .ep-instr-ttl{color:#888780}
+  .ep-instr-dismiss,.ep-instr-show{color:#888780;border-color:#444441}
+  .ep-instr-dismiss:hover,.ep-instr-show:hover{background:#3a3a38}
+  .ep-instr-body{color:#b4b2a9}
+  .ep-instr-body code{background:#3a3a38;color:#b4b2a9}
+  .ep-board-info{background:#2c2c2a;border-color:#3a3a38;color:#b4b2a9}
+  .ep-board-info strong{color:#e8e6e0}
+  .ep-fmt-card{background:#2c2c2a;border-color:#444441}
+  .ep-fmt-card:hover{background:#3a3a38;border-color:#5f5e5a}
+  .ep-fmt-card.ep-selected{background:#1a2a3a;border-color:#4a7aaa}
+  .ep-fmt-name{color:#e8e6e0}
+  .ep-fmt-apps span{color:#888780}
+  .ep-fmt-card.ep-selected .ep-fmt-name{color:#6ab0f5}
+  .ep-fmt-card.ep-selected .ep-fmt-apps span{color:#4a8ac4}
+  .ep-warn{background:#2a2010;border-color:#5a4010}
+  .ep-warn-hdr{color:#c8a040}
+  .ep-warn-list{background:#1c1c1a;border-color:#3a3010}
+  .ep-warn-item{color:#b4b2a9;border-bottom-color:#2a2a28}
+  .ep-warn-note{color:#c8a040}
+  .ep-warn-input{color:#b4b2a9}
+  .ep-warn-input:focus{background:#2c2c2a;border-color:#5f5e5a}
+  .ep-warn-item.ep-warn-resolved .ep-warn-status{color:#7ec87a}
+  .ep-warn-item.ep-warn-resolved .ep-warn-input{color:#7ec87a}
+  .ep-warn.ep-warn-ok{background:#1a2e18;border-color:#3a6a38}
+  .ep-warn.ep-warn-ok .ep-warn-hdr{color:#7ec87a}
+  .ep-footer{border-top-color:#444441}
+  .ep-export-btn{background:#e8e6e0;color:#1a1a18;border-color:#e8e6e0}
+  .ep-export-btn:hover{background:#f5f4f0}
+  .ep-cancel-btn{color:#888780;border-color:#444441}
+  .ep-cancel-btn:hover{background:#3a3a38}
+}
 </style>
 </head>
 <body>
@@ -245,6 +332,7 @@ body{padding-top:0}
 <div id="sw"></div>
 <div id="workspace"><div id="notes-panel"></div><div id="board"></div><div id="limbo-panel"></div></div>
 <div id="welcome-overlay" class="hidden"><div id="welcome-panel"></div></div>
+<div id="export-overlay" class="hidden"><div id="export-panel"></div></div>
 <script>
 
 function buildSaveData(){
@@ -389,6 +477,9 @@ let limboFlipped=false;
 let limboFitMode=false;
 let limboWidth=360;
 let dsrcLimbo=null;
+let dsrcNote=null;
+let pendExport=null;
+let exportFmt='fountain';
 
 let currentFilePath=null;
 let isDirty=false;
@@ -548,7 +639,7 @@ function addB(){
   const hasContent=boards.length>1||C().length>0;
   if(!hasContent){doAddBlankBoard();return;}
   // Otherwise show the add-board prompt
-  pendBoard=true;pend=null;cpPanel=null;cpId=null;renderSW();
+  pendBoard=true;pend=null;cpPanel=null;cpId=null;pendExport=null;renderSW();
 }
 
 function doAddBlankBoard(){
@@ -587,7 +678,7 @@ function renameB(id,el){
 function reqDelB(id){
   if(boards.length<=1)return;
   const b=boards.find(x=>x.id===id);
-  pend={type:'board',id,label:b?b.name:''};cpId=null;renderSW();
+  pend={type:'board',id,label:b?b.name:''};cpId=null;pendExport=null;renderSW();
 }
 
 function doDelB(id){
@@ -675,7 +766,7 @@ function openMovePickerFromLimbo(cardId){ openMovePicker(cardId,'limbo'); }
 function openMovePicker(cardId,source){
   pendMove={cardId,source};
   // clear other exclusive states
-  pend=null;cpPanel=null;cpId=null;pendBoard=false;pendPrint=null;selMode=false;
+  pend=null;cpPanel=null;cpId=null;pendBoard=false;pendPrint=null;selMode=false;pendExport=null;
   renderSW();
 }
 function doMoveTo(targetBoardId,dest){
@@ -747,7 +838,7 @@ function addNote(){
 function reqDelNote(noteId){
   const n=projectNotes.find(x=>x.id===noteId);
   pend={type:'note',noteId,label:n?n.title||'untitled':'untitled'};
-  cpId=null;renderSW();
+  cpId=null;pendExport=null;renderSW();
 }
 function printNotes(){
   const projTitle=currentFilePath?currentFilePath.split('/').pop().replace(/\.screenplaycards$/i,''):'Untitled';
@@ -814,11 +905,23 @@ function renderNotes(){
     const em=document.createElement('div');em.className='lp-empty';em.textContent='No notes yet';nb.appendChild(em);
   } else {
     notes.forEach((n,i)=>{
-      const wrap=document.createElement('div');wrap.className='np-note';
-      // Meta bar
-      const meta=document.createElement('div');meta.className='np-note-meta';
+      const wrap=document.createElement('div');wrap.className='np-note';wrap.draggable=false;
+      // Meta bar (drag handle)
+      const meta=document.createElement('div');meta.className='np-note-meta';meta.style.cursor='grab';
+      meta.addEventListener('mousedown',()=>{wrap.draggable=true;});
+      wrap.addEventListener('dragstart',function(e){dsrcNote=n.id;this.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+      wrap.addEventListener('dragend',()=>{dsrcNote=null;wrap.draggable=false;document.querySelectorAll('.np-note').forEach(el=>el.classList.remove('drag-over','dragging'));});
+      wrap.addEventListener('dragover',e=>{if(dsrcNote&&dsrcNote!==n.id){e.preventDefault();document.querySelectorAll('.np-note').forEach(el=>el.classList.remove('drag-over'));wrap.classList.add('drag-over');}});
+      wrap.addEventListener('dragleave',()=>wrap.classList.remove('drag-over'));
+      wrap.addEventListener('drop',e=>{
+        e.preventDefault();wrap.classList.remove('drag-over');
+        if(!dsrcNote||dsrcNote===n.id)return;
+        const fi=projectNotes.findIndex(x=>x.id===dsrcNote),ti=projectNotes.findIndex(x=>x.id===n.id);
+        if(fi===-1||ti===-1)return;
+        const[moved]=projectNotes.splice(fi,1);projectNotes.splice(ti,0,moved);
+        dsrcNote=null;sched();renderNotes();
+      });
       const spacer=document.createElement('span');spacer.style.flex='1';meta.appendChild(spacer);
-
       const xb=document.createElement('button');xb.style.cssText='font-size:10px;padding:1px 5px';
       xb.textContent='✕';xb.addEventListener('click',e=>{e.stopPropagation();reqDelNote(n.id);});
       meta.appendChild(xb);
@@ -828,6 +931,8 @@ function renderNotes(){
       titleEl.className='np-note-title';titleEl.contentEditable='true';titleEl.spellcheck=true;
       titleEl.dataset.id=n.id;titleEl.dataset.field='title';
       titleEl.innerHTML=esc(n.title);
+      titleEl.addEventListener('mousedown',()=>{wrap.draggable=false;});
+      titleEl.addEventListener('blur',()=>{wrap.draggable=false;});
       titleEl.addEventListener('input',e=>{
         const note=findNote(parseInt(e.target.dataset.id));
         if(note)note.title=e.target.innerText.trim();
@@ -840,6 +945,8 @@ function renderNotes(){
       bodyEl.className='np-note-body';bodyEl.contentEditable='true';bodyEl.spellcheck=true;
       bodyEl.dataset.id=n.id;bodyEl.dataset.field='notes';
       bodyEl.innerHTML=n.notes||'';
+      bodyEl.addEventListener('mousedown',()=>{wrap.draggable=false;});
+      bodyEl.addEventListener('blur',()=>{wrap.draggable=false;});
       bodyEl.addEventListener('input',e=>{
         const note=findNote(parseInt(e.target.dataset.id));
         if(note)note.notes=e.target.innerHTML;
@@ -1186,13 +1293,13 @@ function insertCardAfter(cardId){
 function reqDel(cardId){
   const c=C().find(x=>x.id===cardId);
   pend={type:'card',cardId,label:c?c.title||'untitled':'untitled'};
-  cpId=null;renderSW();
+  cpId=null;pendExport=null;renderSW();
 }
 function reqDelLimbo(cardId){
   const lb=limboByB[curB]||[];
   const c=lb.find(x=>x.id===cardId);
   pend={type:'limbo-card',cardId,label:c?c.title||'untitled':'untitled'};
-  cpId=null;renderSW();
+  cpId=null;pendExport=null;renderSW();
 }
 
 function doDel(){
@@ -1217,7 +1324,7 @@ function doDel(){
 function openCP(cardId,mode){
   const m=mode||'border';
   if(cpPanel===m&&cpId===cardId){cpPanel=null;cpId=null;const hadSpot=colorSpot.size>0;colorSpot.clear();renderSW();renderTbar();if(hadSpot)renderBoard();return;}
-  cpPanel=m;cpId=cardId;pend=null;renderSW();
+  cpPanel=m;cpId=cardId;pend=null;pendExport=null;renderSW();
 }
 function toggleColor(cardId,k){
   const c=findCardAnywhere(cardId);if(!c)return;
@@ -1235,7 +1342,7 @@ function setBgColor(cardId,k){
   if(isLimboCard(cardId))renderLimbo();else renderBoard();
   renderSW();
 }
-function cancel(){const hadSpot=colorSpot.size>0;const hadLink=linkHighlight!==null;pend=null;pendBoard=false;cpPanel=null;cpId=null;colorSpot.clear();linkHighlight=null;renderSW();if(hadSpot||hadLink){renderBoard();renderTbar();}}
+function cancel(){const hadSpot=colorSpot.size>0;const hadLink=linkHighlight!==null;pend=null;pendBoard=false;cpPanel=null;cpId=null;colorSpot.clear();linkHighlight=null;pendExport=null;renderSW();if(hadSpot||hadLink){renderBoard();renderTbar();}}
 
 function setFS(cardId,val){
   const c=findCardAnywhere(cardId);if(!c)return;
@@ -2026,7 +2133,7 @@ document.addEventListener('keydown',e=>{
   if((e.metaKey||e.ctrlKey)&&e.key==='z'){e.preventDefault();undo();return;}
   if((e.metaKey||e.ctrlKey)&&e.key==='y'){e.preventDefault();redo();return;}
   if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){e.preventDefault();addCard();}
-  if(e.key==='Escape'){if(selMode&&selectedCards.size>0){clearSelection();return;}cancel();return;}
+  if(e.key==='Escape'){const eo=document.getElementById('export-overlay');if(eo&&!eo.classList.contains('hidden')){hideExportPanel();return;}if(selMode&&selectedCards.size>0){clearSelection();return;}cancel();return;}
   if(selMode&&(e.metaKey||e.ctrlKey)&&e.key==='a'){e.preventDefault();C().forEach(c=>selectedCards.add(c.id));renderBoard();renderTbar();renderSW();return;}
   if(e.key==='Enter'&&pend){e.preventDefault();pend.type==='card'?doDel():doDelB(pend.id);}
 });
@@ -2118,6 +2225,220 @@ function printLimbo(){
   } else {
     const w=window.open('','_blank');
     if(w){w.document.write(html);w.document.close();setTimeout(()=>w.print(),400);}
+  }
+}
+
+// ── Screenwriting export helpers ────────────────────────────────────────────
+function stripHtml(html){
+  return (html||'').replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,' ')
+    .replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>')
+    .replace(/[ \t]+/g,' ').replace(/\n +/g,'\n').trim();
+}
+
+const hasSlugPrefix=t=>/^(INT\.|EXT\.|INT\.\/EXT\.|INT\/EXT|I\.\/E\.)/i.test((t||'').trim());
+
+function scanBadCards(){
+  return C().filter(c=>!isActHeader(c)).filter(c=>!hasSlugPrefix(c.title)).map(c=>({id:c.id,title:(c.title||'').trim()||'untitled'}));
+}
+
+function buildFountain(){
+  const projTitle=currentFilePath?currentFilePath.split('/').pop().replace(/\.screenplaycards$/i,''):'Untitled';
+  const writerLine=writer.trim()||'';
+  let out='Title: '+projTitle+'\n';
+  if(writerLine)out+='Author: '+writerLine+'\n';
+  out+='\n===\n\n';
+  C().forEach(c=>{
+    if(isActHeader(c)){out+='\n# '+(c.title||'').toUpperCase()+'\n\n';return;}
+    const title=(c.title||'').trim();
+    if(hasSlugPrefix(title)){
+      out+=title.toUpperCase()+'\n\n';
+    } else {
+      out+='INT. ***MISSING SCENE HEADING***\n\n';
+      if(title)out+=title+'\n\n';
+    }
+    const notesRaw=stripHtml(c.notes||'');
+    if(notesRaw)out+=notesRaw+'\n\n';
+  });
+  return out;
+}
+
+function buildFDX(){
+  const projTitle=currentFilePath?currentFilePath.split('/').pop().replace(/\.screenplaycards$/i,''):'Untitled';
+  const ex=s=>(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  let content='';
+  C().forEach(c=>{
+    if(isActHeader(c))return; // FDX has no section concept; omit act headers
+    const title=(c.title||'').trim();
+    if(hasSlugPrefix(title)){
+      content+='<Paragraph Type="Scene Heading"><Text>'+ex(title.toUpperCase())+'</Text></Paragraph>\n';
+    } else {
+      content+='<Paragraph Type="Scene Heading"><Text>INT. ***MISSING SCENE HEADING***</Text></Paragraph>\n';
+      if(title)content+='<Paragraph Type="Action"><Text>'+ex(title)+'</Text></Paragraph>\n';
+    }
+    const notesRaw=stripHtml(c.notes||'');
+    if(notesRaw)content+='<Paragraph Type="Action"><Text>'+ex(notesRaw)+'</Text></Paragraph>\n';
+  });
+  return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
+    +'<FinalDraft DocumentType="Script" Template="No" Version="5">\n'
+    +'<Content>\n'+content+'</Content>\n</FinalDraft>';
+}
+
+function showExportPanel(){
+  pend=null;pendBoard=false;cpPanel=null;cpId=null;pendMove=null;selMode=false;pendExport=null;
+  renderSW();
+  renderExportPanel();
+  const ov=document.getElementById('export-overlay');
+  if(ov)ov.classList.remove('hidden');
+}
+
+function hideExportPanel(){
+  const ov=document.getElementById('export-overlay');
+  if(ov)ov.classList.add('hidden');
+}
+
+function renderExportPanel(){
+  const panel=document.getElementById('export-panel');if(!panel)return;
+  panel.innerHTML='';
+  const hideInstr=localStorage.getItem('sc-export-hide-instructions')==='1';
+  const badCards=scanBadCards();
+  const board=boards.find(b=>b.id===curB);
+  const boardName=board?board.name:'Board';
+  const sceneCount=C().filter(c=>!isActHeader(c)).length;
+
+  // Header
+  const hdr=document.createElement('div');hdr.className='ep-hdr';
+  const ttl=document.createElement('span');ttl.className='ep-title';ttl.textContent='Export for Screenwriting Software';
+  const clsBtn=document.createElement('button');clsBtn.className='ep-close';clsBtn.textContent='\u2715';
+  clsBtn.addEventListener('click',hideExportPanel);
+  hdr.appendChild(ttl);hdr.appendChild(clsBtn);panel.appendChild(hdr);
+
+  // Instructions block
+  const instrWrap=document.createElement('div');instrWrap.className='ep-instr';
+  instrWrap.style.display=hideInstr?'none':'';
+  instrWrap.innerHTML='<div class="ep-instr-hdr">'
+    +'<span class="ep-instr-ttl">How this export works</span>'
+    +'<button class="ep-instr-dismiss">Don\u2019t show again</button>'
+    +'</div>'
+    +'<div class="ep-instr-body">'
+    +'<p>Screenplay Cards exports the current board as a script file you can open directly in your screenwriting app.</p>'
+    +'<ul>'
+    +'<li><strong>Card titles</strong> become scene headings. Titles must start with <code>INT.</code>, <code>EXT.</code>, or <code>INT./EXT.</code></li>'
+    +'<li><strong>Card notes</strong> become action text below each scene heading.</li>'
+    +'<li><strong>Act headers</strong> become section markers in Fountain (visible in Highland\u2019s navigator). In FDX they are omitted.</li>'
+    +'<li>Cards without a scene heading prefix export as <code>INT. ***MISSING SCENE HEADING***</code> \u2014 easy to find and fix in your app.</li>'
+    +'</ul>'
+    +'</div>';
+  const instrShowBtn=document.createElement('button');instrShowBtn.className='ep-instr-show';
+  instrShowBtn.textContent='Show instructions';instrShowBtn.style.display=hideInstr?'':'none';
+  instrShowBtn.addEventListener('click',()=>{
+    localStorage.removeItem('sc-export-hide-instructions');
+    instrWrap.style.display='';instrShowBtn.style.display='none';
+  });
+  instrWrap.querySelector('.ep-instr-dismiss').addEventListener('click',()=>{
+    localStorage.setItem('sc-export-hide-instructions','1');
+    instrWrap.style.display='none';instrShowBtn.style.display='';
+  });
+  panel.appendChild(instrWrap);
+  panel.appendChild(instrShowBtn);
+
+  // Board info
+  const bi=document.createElement('div');bi.className='ep-board-info';
+  bi.innerHTML='Exporting: <strong>'+esc(boardName)+'</strong> \u2014 '+sceneCount+' card'+(sceneCount===1?'':'s');
+  panel.appendChild(bi);
+
+  // Format picker label
+  const fmtLbl=document.createElement('div');fmtLbl.className='ep-fmt-label';fmtLbl.textContent='Choose format:';panel.appendChild(fmtLbl);
+
+  // Format cards
+  const fmtRow=document.createElement('div');fmtRow.className='ep-fmt-row';
+  const fmtData=[
+    {id:'fountain',name:'Fountain',apps:['Highland','Slugline','Fade In','WriterDuet']},
+    {id:'fdx',name:'FDX',apps:['Final Draft']},
+  ];
+  const fmtCardEls={};
+  fmtData.forEach(f=>{
+    const card=document.createElement('div');
+    card.className='ep-fmt-card'+(exportFmt===f.id?' ep-selected':'');
+    const nm=document.createElement('div');nm.className='ep-fmt-name';nm.textContent=f.name;
+    const apps=document.createElement('div');apps.className='ep-fmt-apps';
+    f.apps.forEach(a=>{const s=document.createElement('span');s.textContent=a;apps.appendChild(s);});
+    card.appendChild(nm);card.appendChild(apps);
+    card.addEventListener('click',()=>{
+      exportFmt=f.id;
+      Object.values(fmtCardEls).forEach(c=>c.classList.remove('ep-selected'));
+      card.classList.add('ep-selected');
+      const eb=document.getElementById('ep-export-btn');
+      if(eb)eb.textContent='Export as '+(exportFmt==='fountain'?'Fountain':'FDX');
+    });
+    fmtCardEls[f.id]=card;fmtRow.appendChild(card);
+  });
+  panel.appendChild(fmtRow);
+
+  // Scene heading warning (only if bad cards exist) — editable inline
+  if(badCards.length){
+    const warn=document.createElement('div');warn.className='ep-warn';
+    const wh=document.createElement('div');wh.className='ep-warn-hdr';
+    warn.appendChild(wh);
+    const wl=document.createElement('div');wl.className='ep-warn-list';
+
+    function updateWarnCount(){
+      const rem=wl.querySelectorAll('.ep-warn-item:not(.ep-warn-resolved)').length;
+      if(rem===0){
+        warn.className='ep-warn ep-warn-ok';
+        wh.textContent='\u2713\u2002All cards now have scene heading prefixes';
+      } else {
+        warn.className='ep-warn';
+        wh.textContent='\u26a0\u2002'+rem+' of '+sceneCount+' card'+(rem===1?'':'s')+' don\u2019t have a scene heading prefix (INT. / EXT. / INT./EXT.)';
+      }
+    }
+
+    badCards.forEach(bc=>{
+      const item=document.createElement('div');item.className='ep-warn-item';
+      const status=document.createElement('span');status.className='ep-warn-status';status.textContent='\u26a0';
+      const inp=document.createElement('input');inp.type='text';inp.className='ep-warn-input';
+      inp.value=bc.title;inp.placeholder='INT. SCENE - DAY';
+      inp.spellcheck=false;
+      inp.addEventListener('input',()=>{
+        const card=C().find(c=>c.id===bc.id);if(!card)return;
+        card.title=inp.value;sched();
+        const valid=hasSlugPrefix(inp.value);
+        item.classList.toggle('ep-warn-resolved',valid);
+        status.textContent=valid?'\u2713':'\u26a0';
+        updateWarnCount();
+      });
+      item.appendChild(status);item.appendChild(inp);wl.appendChild(item);
+    });
+
+    warn.appendChild(wl);
+    const wn=document.createElement('div');wn.className='ep-warn-note';
+    wn.textContent='Edit titles above to add a scene heading prefix, or they\u2019ll export as INT. ***MISSING SCENE HEADING***';
+    warn.appendChild(wn);
+    updateWarnCount();
+    panel.appendChild(warn);
+  }
+
+  // Footer
+  const footer=document.createElement('div');footer.className='ep-footer';
+  const exportBtn=document.createElement('button');exportBtn.className='ep-export-btn';exportBtn.id='ep-export-btn';
+  exportBtn.textContent='Export as '+(exportFmt==='fountain'?'Fountain':'FDX');
+  exportBtn.addEventListener('click',()=>{hideExportPanel();doExport(exportFmt);});
+  const cancelBtn=document.createElement('button');cancelBtn.className='ep-cancel-btn';cancelBtn.textContent='Cancel';
+  cancelBtn.addEventListener('click',hideExportPanel);
+  footer.appendChild(exportBtn);footer.appendChild(cancelBtn);
+  panel.appendChild(footer);
+}
+
+async function doExport(format){
+  pendExport=null;renderSW();
+  const projTitle=currentFilePath?currentFilePath.split('/').pop().replace(/\.screenplaycards$/i,''):'Untitled';
+  let content,extension,filterName,defaultName;
+  if(format==='fountain'){
+    content=buildFountain();extension='fountain';filterName='Fountain Script';defaultName=projTitle+'.fountain';
+  } else {
+    content=buildFDX();extension='fdx';filterName='Final Draft Script';defaultName=projTitle+'.fdx';
+  }
+  if(window.electronAPI){
+    await window.electronAPI.saveTextFile({content,defaultName,extension,filterName});
   }
 }
 
@@ -2282,6 +2603,7 @@ if(window.electronAPI){
   window.electronAPI.on('app:fit-all',()=>toggleFit());
   window.electronAPI.on('app:set-view',(v)=>setView(v));
   window.electronAPI.on('app:print-outline',()=>printOutline());
+  window.electronAPI.on('app:export-screenwriting',()=>showExportPanel());
   window.electronAPI.on('app:print-beats',()=>printBeats());
   window.electronAPI.on('app:print-summary',()=>printSummary());
 }

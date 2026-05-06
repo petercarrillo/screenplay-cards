@@ -12,6 +12,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Print
   printHTML: (html) => ipcRenderer.invoke('print:html', html),
 
+  // Screenwriting export
+  saveTextFile: (opts) => ipcRenderer.invoke('file:save-text', opts),
+
   // Window
   setTitle: (t) => ipcRenderer.send('window:set-title', t),
   setEdited: (e) => ipcRenderer.send('window:set-edited', e),
@@ -50,6 +53,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
       'app:print-summary',
       'app:ready',
       'app:open-cancelled',
+      'app:export-screenwriting',
     ];
     if (allowed.includes(channel)) {
       const wrapped = (e, ...args) => fn(...args);
