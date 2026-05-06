@@ -741,10 +741,10 @@ function addNote(){
     if(last){last.focus();const r=document.createRange();r.selectNodeContents(last);window.getSelection().removeAllRanges();window.getSelection().addRange(r);}
   },50);
 }
-function deleteNote(noteId){
-  const idx=projectNotes.findIndex(n=>n.id===noteId);
-  if(idx!==-1)projectNotes.splice(idx,1);
-  sched();renderNotes();renderTbar();
+function reqDelNote(noteId){
+  const n=projectNotes.find(x=>x.id===noteId);
+  pend={type:'note',noteId,label:n?n.title||'untitled':'untitled'};
+  cpId=null;renderSW();
 }
 function printNotes(){
   const projTitle=currentFilePath?currentFilePath.split('/').pop().replace(/\.screenplaycards$/i,''):'Untitled';
@@ -817,7 +817,7 @@ function renderNotes(){
       const spacer=document.createElement('span');spacer.style.flex='1';meta.appendChild(spacer);
 
       const xb=document.createElement('button');xb.style.cssText='font-size:10px;padding:1px 5px';
-      xb.textContent='✕';xb.addEventListener('click',e=>{e.stopPropagation();deleteNote(n.id);});
+      xb.textContent='✕';xb.addEventListener('click',e=>{e.stopPropagation();reqDelNote(n.id);});
       meta.appendChild(xb);
       wrap.appendChild(meta);
       // Title
@@ -1200,6 +1200,11 @@ function doDel(){
     if(i!==-1)lb.splice(i,1);
     pend=null;sched();renderLimbo();renderTbar();renderSW();return;
   }
+  if(pend.type==='note'){
+    const i=projectNotes.findIndex(n=>n.id===pend.noteId);
+    if(i!==-1)projectNotes.splice(i,1);
+    pend=null;sched();renderNotes();renderTbar();renderSW();return;
+  }
   if(pend.type!=='card')return;
   const i=C().findIndex(c=>c.id===pend.cardId);
   if(i===-1){pend=null;renderSW();return;}
@@ -1416,7 +1421,7 @@ function renderSW(){
   if(pend){
     const d=document.createElement('div');d.className='astrip warn';
     d.innerHTML=`<span class="sl d">Delete "${esc(pend.label)}"?</span><button class="dbtn" id="yb">delete</button><button id="nb">cancel</button>`;
-    d.querySelector('#yb').addEventListener('click',()=>(pend.type==='card'||pend.type==='limbo-card')?doDel():doDelB(pend.id));
+    d.querySelector('#yb').addEventListener('click',()=>(pend.type==='card'||pend.type==='limbo-card'||pend.type==='note')?doDel():doDelB(pend.id));
     d.querySelector('#nb').addEventListener('click',cancel);
     sw.appendChild(d);
   } else if(pendMove){
