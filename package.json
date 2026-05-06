@@ -104,6 +104,9 @@
       "!*.docx",
       "!*.yml",
       "!*.zip"
-    ]
+    ],
+    "zip": {
+      "artifactName": "Screenplay-Cards-${version}-${arch}-mac.zip"
+    }
   }
 }
