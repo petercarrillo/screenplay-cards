@@ -137,6 +137,8 @@ button:hover{background:#f1efe8}
   .cf.filled{box-shadow:inset 0 0 0 1000px rgba(0,0,0,0.13)}
   #limbo-panel{border-left-color:#444441}
   .lp-hdr{border-bottom-color:#444441}
+  .lp-srow{border-color:#444441}
+  .lp-srow-meta,.lp-srow-title{border-bottom-color:#3a3a38}
   .lp-count{background:#3a3a38;color:#888780}
   .lp-empty{color:#5f5e5a}
   .lp-resize:hover,.lp-resize.active{background:rgba(55,138,221,0.18)}
@@ -566,6 +568,17 @@ function doDelB(id){
   pend=null;sched();render();
 }
 
+function addLimboCard(){
+  if(!limboByB[curB])limboByB[curB]=[];
+  const card={id:nid++,title:'',notes:'',colors:[],fs:14,size:'md',links:[]};
+  limboByB[curB].push(card);
+  sched();renderLimbo();renderTbar();
+  setTimeout(()=>{
+    const els=document.querySelectorAll('#lp-board [data-field="title"]');
+    const last=els[els.length-1];
+    if(last){last.focus();const r=document.createRange();r.selectNodeContents(last);window.getSelection().removeAllRanges();window.getSelection().addRange(r);}
+  },50);
+}
 function addCard(){
   pushH();C().push({id:nid++,title:'',notes:'',colors:[],fs:14,size:'md',links:[]});sched();renderBoard();renderTbar();
   setTimeout(()=>{
@@ -725,6 +738,9 @@ function renderLimbo(){
     });
     hdr.appendChild(fitb);
   }
+  // + card button
+  const acb=document.createElement('button');acb.style.cssText='font-size:10px;padding:2px 7px;flex-shrink:0';
+  acb.textContent='+ card';acb.addEventListener('click',addLimboCard);hdr.appendChild(acb);
   // Print (only when there are cards)
   if(cards.length){
     const pb=document.createElement('button');pb.style.cssText='font-size:10px;padding:2px 7px;flex-shrink:0';
@@ -1541,39 +1557,57 @@ function makeLimboCrd(c,i){
 }
 
 function makeLimboLRow(c,i){
-  const row=document.createElement('div');
-  row.className='lrow';row.dataset.idx=i;row.draggable=true;
-  row.addEventListener('dragstart',function(e){
-    dsrcLimbo=c.id;dsrc=null;this.classList.add('dragging');e.dataTransfer.effectAllowed='move';
-  });
-  row.addEventListener('dragend',()=>{
-    dsrcLimbo=null;document.querySelectorAll('.lrow').forEach(e=>e.classList.remove('dragging'));clearDO();
-  });
   const colors=c.colors||(c.color&&c.color!=='none'?[c.color]:[]);
   const bgHex=cHex(c.bgColor);const tc=textColor(bgHex);
   const cs=bgHex?`background:${bgHex};`:'';
   const ds=colorDotStyle(colors);const ts=tc?`color:${tc};`:'';
   const cbar=makeColorBar(colors);
-  const _lrowOriginTxt=c._originSn?(c._originAct?c._originAct+' · SC. '+c._originSn:'SC. '+c._originSn):'';
-  row.innerHTML=`
-    <div class="lnum" style="${c.nocount?'opacity:0.3;text-decoration:line-through':''}" title="${_lrowOriginTxt?'from: '+_lrowOriginTxt:''}">${c.nocount?'\u2014':c.sn}${_lrowOriginTxt?`<div style="font-size:8px;color:#b4b2a9;font-style:italic;line-height:1.2;margin-top:1px;white-space:nowrap">${_lrowOriginTxt}</div>`:''}</div>
-    <div class="lf" style="${cs}">${cbar}
-      <div class="st" contenteditable spellcheck="true" data-id="${c.id}" data-field="title" style="font-size:${getFS(c)};font-weight:500;outline:none;flex:1;line-height:1.4;user-select:text;cursor:text;${ts}">${esc(c.title)}</div>
-    </div>
-    <div class="lf bk" style="${cs}">${cbar}
-      <div class="bn" contenteditable spellcheck="true" data-id="${c.id}" data-field="notes" style="font-size:12px;outline:none;flex:1;line-height:1.5;user-select:text;cursor:text;${ts}">${c.notes||''}</div>
-    </div>
-    <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;flex-shrink:0">
-      <span class="cdot" style="${ds}" title="border color"></span>
-      <button class="lrb" style="font-size:11px;padding:2px 5px" title="restore to board">&#8629;</button>
-      <button class="xb" style="font-size:11px;padding:2px 6px">&#x2715;</button>
-    </div>`;
-  const titleEl=row.querySelector('.st');const notesEl=row.querySelector('.bn');
-  attachEditable(titleEl,row);attachEditable(notesEl,row);
-  row.querySelector('.cdot').addEventListener('click',e=>{e.stopPropagation();openCP(c.id,'border');});
-  row.querySelector('.lrb').addEventListener('click',e=>{e.stopPropagation();restoreFromLimbo(c.id);});
-  row.querySelector('.xb').addEventListener('click',e=>{e.stopPropagation();reqDelLimbo(c.id);});
-  return row;
+  const _origTxt=c._originSn?(c._originAct?c._originAct+' · SC. '+c._originSn:'SC. '+c._originSn):'';
+  const _restoreTip=_origTxt?'restore near original position ('+_origTxt+')':'restore to board';
+
+  const wrap=document.createElement('div');
+  wrap.className='lp-srow';wrap.dataset.idx=i;
+
+  // Meta bar: drag handle, scene num, origin, color dot, restore, delete
+  const meta=document.createElement('div');meta.className='lp-srow-meta';meta.style.cssText=cs;
+  meta.setAttribute('draggable','true');
+  meta.addEventListener('dragstart',function(e){
+    dsrcLimbo=c.id;dsrc=null;wrap.classList.add('dragging');e.dataTransfer.effectAllowed='move';
+    e.stopPropagation();
+  });
+  meta.addEventListener('dragend',()=>{
+    dsrcLimbo=null;wrap.classList.remove('dragging');clearDO();
+  });
+  meta.innerHTML=cbar
+    +'<span style="font-size:10px;color:#b4b2a9;font-family:-apple-system,sans-serif;flex-shrink:0;'+ts+'">'+(c.nocount?'\u2014':'SC.\u202f'+c.sn)+'</span>'
+    +(_origTxt?'<span style="font-size:9px;color:#b4b2a9;font-style:italic;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="from: '+esc(_origTxt)+'">'+esc(_origTxt)+'</span>':'<span style="flex:1"></span>')
+    +'<span class="cdot" style="'+ds+'" title="accent color"></span>'
+    +'<button class="lrb" style="font-size:11px;padding:1px 5px;flex-shrink:0" title="'+_restoreTip+'">&#8629;</button>'
+    +'<button class="xb" style="font-size:11px;padding:1px 5px;flex-shrink:0">&#x2715;</button>';
+  meta.querySelector('.cdot').addEventListener('click',e=>{e.stopPropagation();openCP(c.id,'border');});
+  meta.querySelector('.lrb').addEventListener('click',e=>{e.stopPropagation();restoreFromLimbo(c.id);});
+  meta.querySelector('.xb').addEventListener('click',e=>{e.stopPropagation();reqDelLimbo(c.id);});
+  wrap.appendChild(meta);
+
+  // Title
+  const titleEl=document.createElement('div');
+  titleEl.className='lp-srow-title st';titleEl.contentEditable='true';titleEl.spellcheck=true;
+  titleEl.dataset.id=c.id;titleEl.dataset.field='title';
+  titleEl.style.cssText=cs+(ts||'');
+  titleEl.innerHTML=esc(c.title);
+  attachEditable(titleEl,wrap);
+  wrap.appendChild(titleEl);
+
+  // Notes
+  const notesEl=document.createElement('div');
+  notesEl.className='lp-srow-notes bn';notesEl.contentEditable='true';notesEl.spellcheck=true;
+  notesEl.dataset.id=c.id;notesEl.dataset.field='notes';
+  notesEl.style.cssText=cs+(ts||'');
+  notesEl.innerHTML=c.notes||'';
+  attachEditable(notesEl,wrap);
+  wrap.appendChild(notesEl);
+
+  return wrap;
 }
 function onEdit(e){
   const el=e.target,id=parseInt(el.dataset.id),field=el.dataset.field;
