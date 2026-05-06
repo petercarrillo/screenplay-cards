@@ -50,7 +50,7 @@ jobs:
       - name: Upload release assets
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v2.0.0
+          tag_name: v3.0.0
           files: |
             dist/Screenplay-Cards-arm64-mac.dmg
             dist/Screenplay-Cards-x64-mac.dmg
