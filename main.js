@@ -8,7 +8,7 @@ let mainWindow = null;
 let recentFiles = [];
 let showWelcomePref = true;
 let windowBounds = null;
-const lastKnownMtime = {};  // filePath -> mtime at last open/save
+let lastKnownMtimes = {};   // filePath -> mtime at last open/save (persisted in prefs)
 const userDataPath = app.getPath('userData');
 const prefsPath = path.join(userDataPath, 'prefs.json');
 
@@ -20,6 +20,7 @@ function loadPrefs() {
       recentFiles = p.recentFiles || [];
       showWelcomePref = p.showWelcome !== false;
       windowBounds = p.windowBounds || null;
+      lastKnownMtimes = p.lastKnownMtimes || {};
     }
   } catch (e) { recentFiles = []; }
 }
@@ -27,7 +28,7 @@ function loadPrefs() {
 function savePrefs() {
   try {
     fs.mkdirSync(userDataPath, { recursive: true });
-    fs.writeFileSync(prefsPath, JSON.stringify({ recentFiles, showWelcome: showWelcomePref, windowBounds }), 'utf8');
+    fs.writeFileSync(prefsPath, JSON.stringify({ recentFiles, showWelcome: showWelcomePref, windowBounds, lastKnownMtimes }), 'utf8');
   } catch (e) {}
 }
 
@@ -166,7 +167,7 @@ function openFile(filePath) {
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     // Cloud sync check — warn only if file changed since we last opened/saved it
     const stat = fs.statSync(filePath);
-    const known = lastKnownMtime[filePath];
+    const known = lastKnownMtimes[filePath];
     if (known && stat.mtimeMs > known + 2000) {
       const result = dialog.showMessageBoxSync(mainWindow, {
         type: 'warning',
@@ -178,7 +179,7 @@ function openFile(filePath) {
       });
       if (result === 1) return;
     }
-    lastKnownMtime[filePath] = stat.mtimeMs;
+    lastKnownMtimes[filePath] = stat.mtimeMs;
     mainWindow.webContents.send('app:file-opened', { data, filePath });
     mainWindow.setRepresentedFilename(filePath);
     mainWindow.setTitle(data.name || path.basename(filePath, '.screenplaycards'));
@@ -202,7 +203,7 @@ function openFileDialog() {
 function saveFile(data, filePath) {
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-    lastKnownMtime[filePath] = fs.statSync(filePath).mtimeMs;
+    lastKnownMtimes[filePath] = fs.statSync(filePath).mtimeMs;
     mainWindow.setRepresentedFilename(filePath);
     mainWindow.setTitle(data.name || path.basename(filePath, '.screenplaycards'));
     mainWindow.setDocumentEdited(false);
